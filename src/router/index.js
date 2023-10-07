@@ -6,15 +6,28 @@ import Update from '../views/Update.vue'
 import Delete from '../views/Delete.vue'
 import Error404 from '../views/404.vue'
 
+import UserRegister from '../views/users/Register.vue'
+import UserLogin from '../views/users/Login.vue'
+import UserForgetPassword from '../views/users/ForgotPassword.vue'
+import UserResetPassword from '../views/users/ResetPassword.vue'
+import UserInfo from '../views/users/Info.vue'
+
 const routes = [
-  {path: '/', name: 'home', component: Home, meta: {title: 'Home'}},
-  {path: '/records', name: 'records', component: Records, meta: {title: 'Records'}},
-  {path: '/register', name: 'register', component: Register, meta: {title: 'Register'}},
-  {path: '/update', name: 'update', component: Update, meta: {title: 'Update'}},
-  {path: '/delete', name: 'delete', component: Delete, meta: {title: 'Delete'}},
+  {path: '/', component: Home, meta: {title: 'Home'}},
+  {path: '/records', component: Records, meta: {title: 'Records'}},
+  {path: '/register', component: Register, meta: {title: 'Register'}},
+  {path: '/update', component: Update, meta: {title: 'Update'}},
+  {path: '/delete', component: Delete, meta: {title: 'Delete'}},
+
+  // User pages
+  {path: '/user/register', component: UserRegister, meta: {title: 'User Register'}},
+  {path: '/user/login', component: UserLogin, meta: {title: 'User Login'}},
+  {path: '/user/forgetpassword', component: UserForgetPassword, meta: {title: 'User Forgot Password'}},
+  {path: '/user/resetpassword', component: UserResetPassword, meta: {title: 'User Reset Password'}},
+  {path: '/user/info', component: UserInfo, meta: {title: 'User Info'}},
 
   // 404 page
-  {path: '/:catchAll(.*)', name: 'Error404', component: Error404, meta: {title: 'Error'}}
+  {path: '/:catchAll(.*)', component: Error404, meta: {title: 'Error'}}
 ]
 
 const router = createRouter({
