@@ -1,7 +1,7 @@
 <template>
   <v-bottom-navigation mode="shift">
     <router-link v-for="link in items" :key="link.path" :to="link.path">
-      <v-btn>
+      <v-btn style="width: 80px; max-width: 80px">
         <v-icon>{{ link.icon }}</v-icon>
         <span>{{ link.title }}</span>
       </v-btn>

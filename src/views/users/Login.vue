@@ -1,7 +1,11 @@
 <template>
   <v-container fluid>
-      <v-dialog v-model="dialog" max-width="800">
-      <v-row align="center" justify="center" class="fill-height">
+      <v-dialog 
+        v-model="dialog" 
+        max-width="800"
+        persistent
+      >
+      <v-row align="center" justify="center">
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-card elevation="5">
             <v-row justify="center">
@@ -70,6 +74,17 @@
                 </v-btn>
               </v-form>
             </v-card-text>
+
+            <v-card-actions style="max-height: 10px">
+              <v-spacer />
+              <v-btn
+                color="green darken-1"
+                text
+                @click="closeDialog()"
+              >
+                Close
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
@@ -81,34 +96,38 @@
 export default {
   data() {
     return {
-      dialog: true,
+      dialog: false,
       email: '',
       password: '',
       showPassword: false,
       loading: false,
       rules: {
-          emailRules: [v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || "E-mail must be valid"]
+        emailRules: [v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || "E-mail must be valid"]
       }
     };
   },
   methods: {
+    reset(){
+      console.log("reset")
+    },
+    submitForm(){
+      console.log("submit")
+    },
+    openDialog(){
+      this.dialog = true
+    },
+    closeDialog(){
+      this.dialog = false
+    },
     forgotpassword(){
-      console.log("forgotpassword")
+      this.$emit("open-forgetpassword")
+      this.closeDialog()
     },
     register(){
-      console.log("register")
+      this.$emit("open-register")
+      this.closeDialog()
     }
   }
 };
 </script>
-
-<style scoped>
-.fill-height {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-</style>
   
