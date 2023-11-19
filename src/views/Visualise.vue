@@ -1,5 +1,5 @@
 <template>
-ResetPassword
+  Visualise
 </template>
 
 <script>

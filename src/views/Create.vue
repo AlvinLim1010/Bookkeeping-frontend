@@ -1,5 +1,5 @@
 <template>
-ResetPassword
+  Create
 </template>
 
 <script>

@@ -8,9 +8,9 @@ loadFonts()
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = `${process.env.DOC_TITLE} ${to.meta.title}`
+    document.title = `Bookkeeping ${to.meta.title}`
   } else {
-    document.title = process.env.DOC_TITLE
+    document.title = "Bookkeeping"
   }
   next()
 })

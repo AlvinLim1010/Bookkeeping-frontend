@@ -1,17 +1,20 @@
 <template>
   <v-app>
-    <NavBar />
+    <v-main>   
+      <router-view />
+      <NavBar />
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import  NavBar  from "./views/shared/NavBar.vue"
+import NavBar from "./views/shared/NavBar.vue"
 
 export default {
   name: "App",
 
   components: {
-    NavBar,
+    NavBar
   }
 }
   

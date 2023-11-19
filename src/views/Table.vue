@@ -1,5 +1,5 @@
 <template>
-ResetPassword
+  Table
 </template>
 
 <script>
