@@ -1,52 +1,80 @@
 <template>
   <v-container fluid>
-    <v-row align="center" justify="center" style="min-height: 100vh">
+    <v-row align="center" justify="center" style="min-height: 90vh">
       <v-col cols="12" sm="10" md="8" lg="6">
         <v-card elevation="5">
           <v-card-title>Enter the details to add one action</v-card-title>
-          <v-card-text class="text-center">
+          <v-divider />
+          <v-card-text class="text-center mt-3">
             <v-form ref="form" fast-fail @submit.prevent>
-              <v-row justify="space-between" class="mt-2">
-                <v-select
-                  class="ml-3 mr-2"
-                  style="width: 44%;"
-                  v-model="selectedMainAction"
-                  :items="mainActions"
-                  label="Select a main-action"
-                ></v-select>
-
-                <v-select
-                  class="ml-3 mr-2"
-                  style="width: 44%;"
-                  v-model="selectedSubAction"
-                  :items="subActions"
-                  label="Select a sub-action"
-                ></v-select>
-              </v-row>
-
               <v-row justify="space-between">
-                <v-text-field
-                  class="ml-3 mr-2"
-                  style="width: 44%;"
-                  v-model="amount"
-                  label="Amount"
-                  required
-                ></v-text-field>
-
                 <v-text-field 
-                  class="ml-3 mr-2"
+                  class="ml-3 mr-3"
                   style="width: 44%;"
                   v-model="selectedDate"
                   type="date" 
                   label="Date"
                 ></v-text-field>
+                <v-select
+                  class="ml-0 mr-3"
+                  style="width: 44%;"
+                  v-model="mainAction"
+                  label="Select a main-action"
+                  :items="mainActionsOptions"
+                  filled
+              ></v-select>
               </v-row>
 
-              <v-text-field
-                v-model="remarks"
-                label="Remarks"
-                required
-              ></v-text-field>
+              <FormTravelMode
+                v-show="mainAction == MainActions.TRAVEL"
+                ref="formTravelMode"
+              />
+              <FormFoodMode
+                v-show="mainAction == MainActions.FOOD"
+                ref="formFoodMode"
+              />
+              <FormHouseholdMode
+                v-show="mainAction == MainActions.HOUSEHOLD"
+                ref="formHouseholdMode"
+              />
+              <FormIncomeMode
+                v-show="mainAction == MainActions.INCOME"
+                ref="formIncomeMode"
+              />
+              <FormMiscMode
+                v-show="mainAction == MainActions.MISC"
+                ref="formMiscMode"
+              />
+              <FormOthersMode
+                v-show="mainAction == MainActions.OTHERS"
+                ref="formOthersMode"
+              />
+
+              <v-row justify="space-between">
+                <v-select
+                  class="ml-3 mr-3"
+                  style="width: 0%;"
+                  v-model="selectedCurrency"
+                  :items="currencies"
+                  label="Select Currency"
+                ></v-select>
+                <v-text-field
+                  class="ml-0 mr-3"
+                  v-model="amount"
+                  label="Amount"
+                  required
+                  type="number"
+                ></v-text-field>
+              </v-row>
+
+              <v-row justify="space-between" class="mt-0">
+                <v-text-field 
+                  class="ml-3 mr-3"
+                  v-model="remarks"
+                  label="Remarks"
+                  required
+                ></v-text-field>
+              </v-row>
 
               <v-divider />
 
@@ -68,7 +96,6 @@
                   </v-btn>
                 </v-row>
               </v-card-actions>
-
             </v-form>
           </v-card-text>
         </v-card>
@@ -78,52 +105,47 @@
 </template>
 
 <script>
-export default {
-  data() {
-    const defaultActions = {
-      selectedMain: "Food",
-      selectedSub: "Breakfast",
-      main: ["Food", "Travel", "Household", "Income", "Misc"],
-      sub: ["Breakfast", "Lunch", "Dinner", "Grocery", "Others"]
-    };
+import { MainActions } from "../helper/enums"
+import FormTravelMode from "./createActions/FormTravelMode.vue"
+import FormFoodMode from "./createActions/FormFoodMode.vue"
+import FormIncomeMode from "./createActions/FormIncomeMode.vue"
+import FormMiscMode from "./createActions/FormMiscMode.vue"
+import FormHouseholdMode from "./createActions/FormHouseholdMode.vue"
+import FormOthersMode from "./createActions/FormOthersMode.vue"
 
+export default {
+  components: {
+    FormTravelMode,
+    FormFoodMode,
+    FormIncomeMode,
+    FormHouseholdMode,
+    FormMiscMode,
+    FormOthersMode
+  },
+  data() {
     return {
-      selectedDate: this.getCurrentDate(),
-      amount: 0,
+      MainActions,
+      mainActionsOptions: [],
+      mainAction: null,
+      amount: null,
       remarks: null,
       loading: false,
-      defaultActions: defaultActions,
-      selectedMainAction: defaultActions.selectedMain,
-      selectedSubAction: defaultActions.selectedSub,
-      mainActions: defaultActions.main,
-      subActions: defaultActions.sub
+      selectedDate: this.getCurrentDate(),
+      selectedCurrency: null,
+      currencies: ['MYR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD'],
     };
   },
-  watch: {
-    selectedMainAction(newMainAction) {
-      this.updateSubActions(newMainAction);
-    },
-    selectedSubAction(newSubAction) {
-      switch (newSubAction) {
-        case "Petrol":
-          console.log("ODOMETER")
-          break;
-        default:
-          console.log("NOTHING")
-          break;
-      }
+  created() {
+    this.mainAction = this.getMainActionsOption[0]
+    this.mainActionsOptions = this.getMainActionsOption
+    this.selectedCurrency = this.currencies[0]
+  },
+  computed: {
+    getMainActionsOption() {
+      return Object.values(MainActions)
     }
   },
   methods: {
-    reset() {
-      this.selectedDate = this.getCurrentDate()
-      this.amount = 0
-      this.remarks = null
-      this.selectedMainAction = this.defaultActions.selectedMain,
-      this.selectedSubAction = this.defaultActions.selectedSub,
-      this.mainActions = this.defaultActions.main,
-      this.subActions = this.defaultActions.sub
-    },
     getCurrentDate() {
       const today = new Date();
       const year = today.getFullYear();
@@ -132,28 +154,20 @@ export default {
 
       return `${year}-${month}-${day}`;
     },
-    updateSubActions(mainAction) {
-      switch (mainAction) {
-        case "Food":
-          this.subActions = ["Breakfast", "Lunch", "Dinner", "Grocery"];
-          break;
-        case "Income":
-          this.subActions = ["Salary", "Birthday Present"];
-          break;
-        case "Travel":
-          this.subActions = ["Petrol", "Flight", "Parking"];
-          break;
-        case "Household":
-          this.subActions = ["Utility", "Rental"];
-          break;
-        case "Misc":
-          this.subActions = ["Dog + Parents"];
-          break;
-      }
-      
-      this.subActions.push("Others")
-      this.selectedSubAction = this.subActions[0]
+    reset() {
+      this.mainAction = this.getMainActionsOption[0]
+      this.mainActionsOptions = this.getMainActionsOption
+      this.amount = null
+      this.selectedDate = this.getCurrentDate()
+      this.remarks = null
+      this.selectedCurrency = this.currencies[0]
+
+      this.$refs.formTravelMode.reset()
+      this.$refs.formFoodMode.reset()
+      this.$refs.formHouseholdMode.reset()
+      this.$refs.formMiscMode.reset()
+      this.$refs.formIncomeMode.reset()
     }
   }
-}
+};
 </script>

@@ -7,6 +7,10 @@ import { loadFonts } from './plugins/webfontloader'
 loadFonts()
 
 router.beforeEach((to, from, next) => {
+  if (to.path === "/"){
+    next('/overview')
+  }
+
   if (to.meta.title) {
     document.title = `Bookkeeping ${to.meta.title}`
   } else {
