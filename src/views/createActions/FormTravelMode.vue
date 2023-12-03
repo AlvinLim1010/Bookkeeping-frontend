@@ -47,7 +47,9 @@ export default {
       return [
         TravelSubActions.PETROL,
         TravelSubActions.FLIGHT,
-        "OTHERS"
+        TravelSubActions.HOTEL,
+        TravelSubActions.PARKING,
+        "Others"
       ]
     }
   },

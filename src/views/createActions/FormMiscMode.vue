@@ -30,9 +30,8 @@
     computed: {
       getSubActionsOption() {
         return [
-          MiscSubActions.DOGFOODS,
-          MiscSubActions.TREATPARENTS,
-          "OTHERS"
+          MiscSubActions.DOGANDPARENTS,
+          "Others"
         ]
       }
     },

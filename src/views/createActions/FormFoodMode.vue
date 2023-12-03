@@ -34,7 +34,7 @@ export default {
         FoodSubActions.LUNCH,
         FoodSubActions.DINNER,
         FoodSubActions.GROCERY,
-        "OTHERS"
+        "Others"
       ]
     }
   },

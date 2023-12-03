@@ -1,37 +1,38 @@
 export const MainActions = {
-    FOOD: "FOOD",
-    TRAVEL: "TRAVEL",
-    INCOME: "INCOME",
-    MISC: "MISC",
-    HOUSEHOLD: "HOUSEHOLD",
-    OTHERS: "OTHERS"
+    FOOD: "Food",
+    TRAVEL: "Travel",
+    INCOME: "Income",
+    MISC: "Misc",
+    HOUSEHOLD: "Household",
+    OTHERS: "Others"
 };
 
 export const FoodSubActions = {
-    BREAKFAST: "BREAKFAST",
-    LUNCH: "LUNCH",
-    DINNER: "DINNER",
-    GROCERY: "GROCERY"
+    BREAKFAST: "Breakfast",
+    LUNCH: "Lunch",
+    DINNER: "Dinner",
+    GROCERY: "Grocery"
 };
 
 export const TravelSubActions = {
-    PETROL: "PETROL",
-    FLIGHT: "FLIGHT",
-    PARKING: "PARKING"
+    PETROL: "Petrol",
+    FLIGHT: "Flight Ticket",
+    HOTEL: "Hotel",
+    PARKING: "Parking"
 };
 
 export const MiscSubActions = {
-    DOGFOODS: "DOG FOODS",
-    TREATPARENTS: "TREAT PARENTS"
+    DOGANDPARENTS: "Dog Foods + Treat Parents"
 };
 
 export const IncomeSubActions = {
-    SALARY: "SALARY",
-    BIRTHDAY: "BIRTHDAY PRESENTS"
+    SALARY: "Salary",
+    BIRTHDAY: "Birthday Gift"
 };
 
 export const HouseholdSubActions = {
-    RENTAL: "RENTAL",
-    UTILITY: "UTILITY"
+    RENTAL: "Rental",
+    ELECTRICBILL: "Electric Bill",
+    WATERBILL: "Water Bill"
 };
   

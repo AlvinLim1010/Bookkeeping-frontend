@@ -136,6 +136,7 @@ export default {
     };
   },
   created() {
+    console.log(this.$store.state.user)
     this.mainAction = this.getMainActionsOption[0]
     this.mainActionsOptions = this.getMainActionsOption
     this.selectedCurrency = this.currencies[0]
@@ -149,7 +150,7 @@ export default {
     getCurrentDate() {
       const today = new Date();
       const year = today.getFullYear();
-      const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+      const month = (today.getMonth() + 1).toString().padStart(2, '0'); 
       const day = today.getDate().toString().padStart(2, '0');
 
       return `${year}-${month}-${day}`;

@@ -31,8 +31,9 @@ export default {
     getSubActionsOption() {
       return [
         HouseholdSubActions.RENTAL,
-        HouseholdSubActions.UTILITY,
-        "OTHERS"
+        HouseholdSubActions.ELECTRICBILL,
+        HouseholdSubActions.WATERBILL,
+        "Others"
       ]
     }
   },

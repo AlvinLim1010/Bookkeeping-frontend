@@ -32,7 +32,7 @@ export default {
       return [
         IncomeSubActions.SALARY,
         IncomeSubActions.BIRTHDAY,
-        "OTHERS"
+        "Others"
       ]
     }
   },
