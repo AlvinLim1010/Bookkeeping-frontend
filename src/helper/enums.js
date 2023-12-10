@@ -1,3 +1,11 @@
+export const CustomDialogText = {
+    OVERVIEWACCESS: "OverviewAccess",
+    CREATEACTION: "CreateAction",
+    PROFILEACCESS: "ProfileAccess",
+    ACTIONVISUALISE: "ActionVisualise",
+    ACTIONTABLE: "ActionTable",
+};
+
 export const MainActions = {
     FOOD: "Food",
     TRAVEL: "Travel",

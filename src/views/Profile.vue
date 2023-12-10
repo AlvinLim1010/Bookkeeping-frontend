@@ -21,19 +21,10 @@
             </v-list>
 
             <v-row v-else>
-              <v-col cols="12" class="text-center">
-                <h3 class="display-1 white--text">Please 
-                  <a 
-                    href="#" 
-                    @click.prevent="openLoginDialog" 
-                    class="white--text"
-                  >
-                    log in
-                  </a> 
-
-                  to access your profile.
-                </h3>
-              </v-col>
+              <DialogAccessProfile 
+                @open-login="openLoginDialog"
+                :customText="customText"
+              />
             </v-row>
           </v-card-text>
         </v-card>
@@ -61,17 +52,23 @@
 </template>
 
 <script>
+import { CustomDialogText } from "../helper/enums"
 import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
 import UserResetPassword from '../views/users/ResetPassword.vue'
 
+import DialogAccessProfile from './shared/DialogAccessProfile.vue'
+
 export default {
+  name: "Profile",
+
   components: {
     UserRegister,
     UserLogin,
     UserForgetPassword,
-    UserResetPassword
+    UserResetPassword,
+    DialogAccessProfile
   },
   data() {
     return {
@@ -83,6 +80,7 @@ export default {
         join_date: "",
         logged: false
       },
+      customText: CustomDialogText.PROFILEACCESS
     };
   },
   methods: {

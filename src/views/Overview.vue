@@ -1,40 +1,70 @@
 <template>
   <v-app app>
     <v-container fluid>
-      <v-card-title class="grey lighten-5">
-        Today {{ todaysDate }}
-      </v-card-title>
-
-      <!-- Shows the number of actions stored based on the type of actions. For example
-        Total: 15
-        Travel: 5
-        Household: 10 
+      <v-row>
+        <v-card-title class="grey lighten-5">
+          Today {{ todaysDate }}
+        </v-card-title>
+        <v-spacer />
         
-        Record from STARTING DATE to ENDING DATE
-      -->
+        <v-btn :color="recordAllTime ? 'indigo' : 'white'" @click="swapRecordOverview(true)">All</v-btn>
+        <v-btn :color="recordAllTime ? 'white' : 'indigo'" class="ml-1 mr-3" @click="swapRecordOverview(false)">Yours</v-btn>
+      </v-row>
+      
         <v-card 
           color="indigo" 
           variant="flat"
+          class="mt-3"
         >
           <v-card-title>Record Actions Information</v-card-title>
           <v-card-subtitle class="white--text">
-            This section reveals how many records you have and the timeframe they cover, from the beginning to the end.
+            This section reveals how many records {{ textShowing }} and the timeframe they cover, from the beginning to the end.
           </v-card-subtitle>
-          <v-card-text>
+          <v-card-text v-if="recordAllTime || this.$store.state.user.username">
             <div class="my-2">
               <v-row>
-                <v-col cols="2">
-                  <v-card-text class="text-h5 white--text">
-                    Title: 
+                <v-card-text class="text-h6">
+                  Record from {{ modelData.startDate }} to {{ modelData.endDate }}
+                </v-card-text>
+              </v-row>
+
+              <v-divider />
+
+              <v-row v-for="(title, index) in totalTitle" :key="index">
+                <v-col cols="4" sm="2" v-if="index % 2 === 0">
+                  <v-card-text class="text-h8">
+                    {{ totalTitle[index] }}:
                   </v-card-text>
                 </v-col>
-                <v-col cols="1">
-                  <v-card-text class="text-h5 white--text">
-                    {{ modelData.data.totalActions }}
+
+                <v-col cols="8" sm="4" v-if="index % 2 === 0">
+                  <v-card-text class="text-h8">
+                    {{ modelData.totalActions[index] }}
+                  </v-card-text>
+                </v-col>
+
+                <v-col cols="4" sm="2" v-if="index + 1 < totalTitle.length && index % 2 === 0">
+                  <v-card-text class="text-h8">
+                    {{ totalTitle[index + 1] }}:
+                  </v-card-text>
+                </v-col>
+
+                <v-col cols="8" sm="4" v-if="index % 2 === 0">
+                  <v-card-text class="text-h8">
+                    {{ modelData.totalActions[index + 1] }}
                   </v-card-text>
                 </v-col>
               </v-row>
             </div>
+          </v-card-text>
+
+          <v-card-text
+            v-else
+          >
+            <DialogAccessProfile
+              :customText="customText"
+              @open-login="openLoginDialog"
+            />
           </v-card-text>
         </v-card>
 
@@ -42,6 +72,7 @@
         class="mt-5" 
         color="indigo" 
         variant="flat"
+        v-if="recordAllTime || this.$store.state.user.username"
       >
         <v-card-title
           >Last 7 days statistics
@@ -51,7 +82,7 @@
         </v-card-subtitle>
         <v-expansion-panels focusable>
           <v-expansion-panel
-            v-for="(item, index) in modelData.data.previousActions"
+            v-for="(item, index) in modelData.previousActions"
             :key="index"
           >
             <v-expansion-panel-title 
@@ -88,26 +119,69 @@
       </v-card>
     </v-container>
   </v-app>
+
+  <UserRegister 
+      @open-login="openLoginDialog"
+      ref="userRegister" 
+    />
+    <UserLogin 
+      @open-register="openRegisterDialog"
+      @open-forgetpassword="openForgetPasswordDialog"
+      ref="userLogin"
+    />
+    <UserForgetPassword 
+      @open-login="openLoginDialog"
+      ref="userForgetPassword"
+    />
+    <UserResetPassword 
+      ref="userResetPassword"
+    />
+    
 </template>
 
 <script>
+import { MainActions, CustomDialogText } from "../helper/enums"
+import DialogAccessProfile from './shared/DialogAccessProfile.vue'
+import UserRegister from '../views/users/Register.vue'
+import UserLogin from '../views/users/Login.vue'
+import UserForgetPassword from '../views/users/ForgotPassword.vue'
+import UserResetPassword from '../views/users/ResetPassword.vue'
 
 export default {
   name: "Overview",
+  components: {
+    DialogAccessProfile,
+    UserRegister,
+    UserLogin,
+    UserForgetPassword,
+    UserResetPassword,
+  },
 
   data() {
     return {
+      recordAllTime: true,
+      textShowing: "are inputted into database",
       todaysDate: this.getCurrentDate(),
+      totalTitle: ["Total Actions", ...Object.values(MainActions)],
       modelData: {
-        data: {
-          totalActions: 0,
-          previousActions: [1, 2]
-        },
-        actionTypes: ["Income", "Food", "Travel", "Household", "Others"]
-      }
+        previousActions: [1, 2],
+        totalActions: [0, 0, 0, 0, 0, 0, 0],
+        actionTypes: Object.values(MainActions),
+        startDate: "2021-01-12",
+        endDate: "2023-12-12"
+      },
+      customText: CustomDialogText.OVERVIEWACCESS
     };
   },
   methods: {
+    swapRecordOverview(value){
+      this.recordAllTime = value
+      if (value){
+        this.textShowing = "are inputted into database"
+      } else {
+        this.textShowing = "you have"
+      }
+    },
     getCurrentDate() {
       const today = new Date();
       const year = today.getFullYear();
@@ -116,6 +190,18 @@ export default {
 
       return `${year}-${month}-${day}`;
     },
+    openLoginDialog(){
+      this.$refs.userLogin.openDialog()
+    },
+    openRegisterDialog(){
+      this.$refs.userRegister.openDialog()
+    },
+    openForgetPasswordDialog(){
+      this.$refs.userForgetPassword.openDialog()
+    },
+    openResetPasswordDialog(){
+      this.$refs.userResetPassword.openDialog()
+    }
   }
 };
 </script>

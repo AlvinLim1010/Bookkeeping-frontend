@@ -13,9 +13,9 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.meta.title) {
-    document.title = `Bookkeeping ${to.meta.title}`
+    document.title = `${ process.env.VUE_APP_TITLE } ${ to.meta.title }`
   } else {
-    document.title = "Bookkeeping"
+    document.title = `${ process.env.VUE_APP_TITLE }`
   }
   next()
 })
