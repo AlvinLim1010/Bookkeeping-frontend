@@ -6,12 +6,10 @@ function getAuthServerUrl(){
 
 async function setStateUser(data) {
     createStore.state.user.id = data.id
-    createStore.state.user.role = data.user_metadata.role;
     createStore.state.user.username = data.username;
-    createStore.state.user.accessToken = data.access_token;
-    createStore.state.user.refreshToken = data.refresh_token;
-    createStore.state.user.userLog = true;
-    createStore.state.user.authValidated = true;
+    createStore.state.user.email = data.email;
+    createStore.state.user.password = "***********";
+    createStore.state.user.joinDate = data.joined_date;
 }
 
 async function test(data) {

@@ -5,7 +5,9 @@ export default createStore({
     user: {
       id: null,
       username: null,
-      accessToken: null
+      email: null,
+      password: null,
+      joinDate: null
     }
   },
   getters: {

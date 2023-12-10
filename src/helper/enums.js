@@ -43,4 +43,8 @@ export const HouseholdSubActions = {
     ELECTRICBILL: "Electric Bill",
     WATERBILL: "Water Bill"
 };
+
+export const RouteAuthServer = {
+    LOGIN: "/user/login"
+};
   

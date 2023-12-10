@@ -1,15 +1,11 @@
 <template>
   <v-container fluid>
-      <v-dialog 
-        v-model="dialog" 
-        max-width="800"
-        persistent
-      >
+    <v-dialog v-model="dialog" max-width="800" persistent>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-card elevation="5">
             <v-row justify="center">
-              <v-card-title 
+              <v-card-title
                 class="text-h6 text-md-h5 text-lg-h4 font-weight-bold text-center"
                 style="line-height: 2"
               >
@@ -66,7 +62,7 @@
                   color="primary"
                 ></v-progress-linear>
 
-                <v-btn type="submit" color="primary" block @click="submitForm"
+                <v-btn type="submit" color="primary" block @click="login"
                   >Login
                 </v-btn>
                 <v-btn type="clear" block class="mt-3" @click="reset"
@@ -77,11 +73,7 @@
 
             <v-card-actions style="max-height: 10px">
               <v-spacer />
-              <v-btn
-                color="green darken-1"
-                text
-                @click="closeDialog()"
-              >
+              <v-btn color="green darken-1" text @click="closeDialog()">
                 Close
               </v-btn>
             </v-card-actions>
@@ -93,41 +85,75 @@
 </template>
 
 <script>
+let httpRequest = require("../../helper/httpRequests");
+import { getAuthServerUrl, setStateUser } from "../../helper/commons";
+import { RouteAuthServer } from "../../helper/enums";
+
 export default {
   data() {
     return {
       dialog: false,
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       showPassword: false,
       loading: false,
       rules: {
-        emailRules: [v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || "E-mail must be valid"]
-      }
+        emailRules: [
+          (v) =>
+            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+            "E-mail must be valid",
+        ],
+      },
     };
   },
   methods: {
-    reset(){
-      console.log("reset")
+    reset() {
+      this.$refs.form.reset()
+      this.loading = false
     },
-    submitForm(){
-      console.log("submit")
+    async login() {
+      if (this.$refs.form.validate()){
+        var requestBody = { 
+          "email": this.email, 
+          "password": this.password
+        }
+
+        this.loading = true
+        
+        let response = await httpRequest.axiosRequest(
+          "post",
+          getAuthServerUrl(), 
+          RouteAuthServer.LOGIN, 
+          requestBody,
+        )
+        
+        if (response.status === 200){
+          setStateUser(response.data)
+          this.closeDialog()
+        } else if (response.status === 401){
+          console.log("Incorrect Email/Password")
+        } else if (response.status === 403){
+          console.log("Verify Email")
+        }
+        
+        this.reset()
+      }
     },
-    openDialog(){
-      this.dialog = true
+    openDialog() {
+      this.dialog = true;
     },
-    closeDialog(){
-      this.dialog = false
+    closeDialog() {
+      this.dialog = false;
     },
-    forgotpassword(){
-      this.$emit("open-forgetpassword")
-      this.closeDialog()
+    forgotpassword() {
+      this.$emit("open-forgetpassword");
+      this.closeDialog();
     },
-    register(){
-      this.$emit("open-register")
-      this.closeDialog()
-    }
-  }
+    register() {
+      this.$emit("open-register");
+      this.closeDialog();
+    },
+  },
 };
 </script>
   

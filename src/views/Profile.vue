@@ -7,7 +7,7 @@
             Profile Information
           </v-card-title>
           <v-card-text>
-            <v-list v-if="user.logged">
+            <v-list v-if="this.$store.state.user.username">
               <v-list-item v-for="(value, key) in user" :key="key">
                 <v-list-item-title class="white--text">
                   {{ capitalize(key) }}:
@@ -73,12 +73,10 @@ export default {
   data() {
     return {
       user: {
-        email: 'user@example.com',
-        username: 'example_user',
-        password: '*************',
-        roles: 'Normal',
-        join_date: "",
-        logged: false
+        email: this.$store.state.user.email,
+        username: this.$store.state.user.username,
+        password: this.$store.state.user.password,
+        join_date: this.$store.state.user.joinDate,
       },
       customText: CustomDialogText.PROFILEACCESS
     };
@@ -102,7 +100,3 @@ export default {
   }
 };
 </script>
-
-<style>
-
-</style>
