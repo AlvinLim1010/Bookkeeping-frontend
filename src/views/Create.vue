@@ -52,53 +52,6 @@
                 v-show="mainAction == MainActions.OTHERS"
                 ref="formOthersMode"
               />
-
-              <v-row justify="space-between">
-                <v-select
-                  class="ml-3 mr-3"
-                  style="width: 0%;"
-                  v-model="selectedCurrency"
-                  :items="currencies"
-                  label="Select Currency"
-                ></v-select>
-                <v-text-field
-                  class="ml-0 mr-3"
-                  v-model="amount"
-                  label="Amount"
-                  required
-                  type="number"
-                ></v-text-field>
-              </v-row>
-
-              <v-row justify="space-between" class="mt-0">
-                <v-text-field 
-                  class="ml-3 mr-3"
-                  v-model="remarks"
-                  label="Remarks"
-                  required
-                ></v-text-field>
-              </v-row>
-
-              <v-divider />
-
-              <v-progress-linear
-                :active="loading"
-                :indeterminate="loading"
-                absolute
-                top
-                color="primary"
-              ></v-progress-linear>
-
-              <v-card-actions>
-                <v-row justify="space-between">
-                  <v-btn type="submit" class="mt-3 ml-3" style="width: 44%;" color="primary">
-                    Create Action
-                  </v-btn>
-                  <v-btn type="clear" class="mt-3 mr-3" style="width: 44%;" @click="reset">
-                    Clear
-                  </v-btn>
-                </v-row>
-              </v-card-actions>
             </v-form>
           </v-card-text>
 
@@ -171,21 +124,13 @@ export default {
       MainActions,
       mainActionsOptions: [],
       mainAction: null,
-      amount: null,
-      remarks: null,
-      loading: false,
       selectedDate: this.getCurrentDate(),
-      selectedCurrency: null,
-      currencies: ['MYR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD'],
       customText: CustomDialogText.CREATEACTION
     };
   },
   created() {
-    console.log(this.$store.state)
-    console.log(this.$store.state.user.id)
     this.mainAction = this.getMainActionsOption[0]
     this.mainActionsOptions = this.getMainActionsOption
-    this.selectedCurrency = this.currencies[0]
   },
   computed: {
     getMainActionsOption() {
@@ -200,20 +145,6 @@ export default {
       const day = today.getDate().toString().padStart(2, '0');
 
       return `${year}-${month}-${day}`;
-    },
-    reset() {
-      this.mainAction = this.getMainActionsOption[0]
-      this.mainActionsOptions = this.getMainActionsOption
-      this.amount = null
-      this.selectedDate = this.getCurrentDate()
-      this.remarks = null
-      this.selectedCurrency = this.currencies[0]
-
-      this.$refs.formTravelMode.reset()
-      this.$refs.formFoodMode.reset()
-      this.$refs.formHouseholdMode.reset()
-      this.$refs.formMiscMode.reset()
-      this.$refs.formIncomeMode.reset()
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()

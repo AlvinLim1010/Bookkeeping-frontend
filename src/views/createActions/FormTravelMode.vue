@@ -54,10 +54,6 @@ export default {
     }
   },
   methods:{
-    reset(){
-      this.subAction = this.getSubActionsOption[0]
-      this.subActionsOptions = this.getSubActionsOption
-    }
   }
 }
 
