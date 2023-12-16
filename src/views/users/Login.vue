@@ -129,6 +129,12 @@ export default {
         
         if (response.status === 200){
           setStateUser(response.data)
+          const data = { 
+            value: response.data, 
+            timestamp: new Date().getTime() 
+          };
+          localStorage.setItem('user', JSON.stringify(data));
+
           this.closeDialog()
         } else if (response.status === 401){
           console.log("Incorrect Email/Password")

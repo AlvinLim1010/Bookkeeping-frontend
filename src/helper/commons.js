@@ -5,11 +5,11 @@ function getAuthServerUrl(){
 }
 
 async function setStateUser(data) {
-    createStore.state.user.id = data.id
-    createStore.state.user.username = data.username;
-    createStore.state.user.email = data.email;
-    createStore.state.user.password = "***********";
-    createStore.state.user.joinDate = data.joined_date;
+    createStore.state.user.id = data ? data.id : null;
+    createStore.state.user.username = data ? data.username : null;
+    createStore.state.user.email = data ? data.email : null;
+    createStore.state.user.password = data ? "***********" : null;
+    createStore.state.user.joinDate = data ? data.joined_date : null;
 }
 
 async function test(data) {
