@@ -61,7 +61,9 @@
 </template>
 
 <script>
-import { FoodSubActions } from "../../helper/enums"
+let httpRequest = require("../../helper/httpRequests");
+import { FoodSubActions, CreateActions } from "../../helper/enums"
+import { getBackEndServer } from "../../helper/commons";
 
 export default {
   props: {
@@ -105,9 +107,35 @@ export default {
       this.selectedCurrency = this.currencies[0]
       this.$emit("reset-date")
     },
-    submit() {
+    async submit() {
       if (this.amount !== null && this.selectedDate) {
-        console.log("submit")
+        if (this.remarks === null) {
+          this.remarks = {}
+        }
+
+        var requestBody = { 
+          "username": this.$store.state.user.username, 
+          "date": this.selectedDate,
+          "main_category": "Food",
+          "sub_category": this.subAction,
+          "amount": this.amount,
+          "remarks": this.remarks
+        }
+
+        this.loading = true
+        
+        let response = await httpRequest.axiosRequest(
+          "post",
+          getBackEndServer(), 
+          CreateActions.CREATE, 
+          requestBody,
+        )
+
+        if (response.status === 200){
+          console.log("Successfully created the action")
+          this.reset()
+          this.loading = false
+        }
       } 
     }
   }

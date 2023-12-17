@@ -1,6 +1,6 @@
 import createStore from '../store'
 
-function getAuthServerUrl(){
+function getBackEndServer(){
     return process.env.VUE_APP_AUTH_SERVER
 }
 
@@ -25,4 +25,4 @@ function authorizeRole(targetRole) {
     return createStore.state.user.role === targetRole;
 }
 
-export { getAuthServerUrl, authorizeRole, setStateUser, setTokens, test };
+export { getBackEndServer, authorizeRole, setStateUser, setTokens, test };

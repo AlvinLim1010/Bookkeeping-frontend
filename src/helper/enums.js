@@ -47,4 +47,8 @@ export const HouseholdSubActions = {
 export const RouteAuthServer = {
     LOGIN: "/user/login"
 };
+
+export const CreateActions = {
+    CREATE: "/actions/create"
+};
   

@@ -86,7 +86,7 @@
 
 <script>
 let httpRequest = require("../../helper/httpRequests");
-import { getAuthServerUrl, setStateUser } from "../../helper/commons";
+import { getBackEndServer, setStateUser } from "../../helper/commons";
 import { RouteAuthServer } from "../../helper/enums";
 
 export default {
@@ -122,7 +122,7 @@ export default {
         
         let response = await httpRequest.axiosRequest(
           "post",
-          getAuthServerUrl(), 
+          getBackEndServer(), 
           RouteAuthServer.LOGIN, 
           requestBody,
         )
