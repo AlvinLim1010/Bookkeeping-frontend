@@ -95,16 +95,17 @@ export default {
   },
   methods:{
     reset(){
-    this.$refs.form.reset()
-    this.subAction = this.getSubActionsOption[0]
-    this.subActionsOptions = this.getSubActionsOption
-    this.selectedCurrency = this.currencies[0]
-  },
-  submit() {
-    if (this.amount !== null && this.selectedDate) {
-      console.log("submit")
-    } 
-  }
+      this.$refs.form.reset()
+      this.$emit("reset-date")
+      this.subAction = this.getSubActionsOption[0]
+      this.subActionsOptions = this.getSubActionsOption
+      this.selectedCurrency = this.currencies[0]
+    },
+    submit() {
+      if (this.amount !== null && this.selectedDate) {
+        console.log("submit")
+      } 
+    }
   }
 }
 

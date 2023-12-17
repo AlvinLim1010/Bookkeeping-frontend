@@ -97,6 +97,7 @@ export default {
   methods:{
     reset(){
       this.$refs.form.reset()
+      this.$emit("reset-date")
       this.subAction = this.getSubActionsOption[0]
       this.subActionsOptions = this.getSubActionsOption
       this.selectedCurrency = this.currencies[0]

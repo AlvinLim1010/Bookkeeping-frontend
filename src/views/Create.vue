@@ -31,31 +31,37 @@
               <FormTravelMode
                 v-show="mainAction == MainActions.TRAVEL"
                 :selectedDate="selectedDate"
+                @reset-date="resetSelectedDate"
                 ref="formTravelMode"
               />
               <FormFoodMode
                 v-show="mainAction == MainActions.FOOD"
                 :selectedDate="selectedDate"
+                @reset-date="resetSelectedDate"
                 ref="formFoodMode"
               />
               <FormHouseholdMode
                 v-show="mainAction == MainActions.HOUSEHOLD"
                 :selectedDate="selectedDate"
+                @reset-date="resetSelectedDate"
                 ref="formHouseholdMode"
               />
               <FormIncomeMode
                 v-show="mainAction == MainActions.INCOME"
                 :selectedDate="selectedDate"
+                @reset-date="resetSelectedDate"
                 ref="formIncomeMode"
               />
               <FormMiscMode
                 v-show="mainAction == MainActions.MISC"
                 :selectedDate="selectedDate"
+                @reset-date="resetSelectedDate"
                 ref="formMiscMode"
               />
               <FormOthersMode
                 v-show="mainAction == MainActions.OTHERS"
                 :selectedDate="selectedDate"
+                @reset-date="resetSelectedDate"
                 ref="formOthersMode"
               />
             </v-form>
@@ -151,6 +157,9 @@ export default {
       const day = today.getDate().toString().padStart(2, '0');
 
       return `${year}-${month}-${day}`;
+    },
+    resetSelectedDate(){
+      this.selectedDate = this.getCurrentDate()
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()

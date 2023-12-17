@@ -103,6 +103,7 @@ export default {
       this.subAction = this.getSubActionsOption[0]
       this.subActionsOptions = this.getSubActionsOption
       this.selectedCurrency = this.currencies[0]
+      this.$emit("reset-date")
     },
     submit() {
       if (this.amount !== null && this.selectedDate) {

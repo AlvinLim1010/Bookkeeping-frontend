@@ -100,6 +100,7 @@ export default {
     },
     reset() {
       this.$refs.form.reset()
+      this.$emit("reset-date")
       this.fuelPrice = "2.05"
       this.selectedCurrency = this.currencies[0]
     }

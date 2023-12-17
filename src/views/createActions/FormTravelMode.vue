@@ -13,11 +13,13 @@
     <FormPetrolMode
       v-show="subAction == TravelSubActions.PETROL"
       :selectedDate="selectedDate"
+      @reset-date="resetDate"
       ref="formPetrolMode"
     />
     <FormFlightMode
       v-show="subAction == TravelSubActions.FLIGHT"
       :selectedDate="selectedDate"
+      @reset-date="resetDate"
       ref="formFlightMode"
     />
   </span>
@@ -62,6 +64,9 @@ export default {
     }
   },
   methods:{
+    resetDate(){
+      this.$emit("reset-date")
+    }
   }
 }
 

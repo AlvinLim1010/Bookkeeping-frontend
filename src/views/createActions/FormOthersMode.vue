@@ -81,6 +81,7 @@ export default {
   methods:{
     reset(){
       this.$refs.form.reset()
+      this.$emit("reset-date")
       this.selectedCurrency = this.currencies[0]
     },
     submit() {
