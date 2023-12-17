@@ -60,7 +60,9 @@
 </template>
 
 <script>
-import { MiscSubActions } from "../../helper/enums"
+let httpRequest = require("../../helper/httpRequests");
+import { MiscSubActions, CreateActions } from "../../helper/enums"
+import { getBackEndServer } from "../../helper/commons";
 
 export default {
   props: {
@@ -101,9 +103,31 @@ export default {
       this.subActionsOptions = this.getSubActionsOption
       this.selectedCurrency = this.currencies[0]
     },
-    submit() {
+    async submit() {
       if (this.amount !== null && this.selectedDate) {
-        console.log("submit")
+        var requestBody = { 
+          "username": this.$store.state.user.username, 
+          "date": this.selectedDate,
+          "main_category": "Food",
+          "sub_category": this.subAction,
+          "amount": this.amount,
+          "remarks": this.remarks === null ? {} : { "Notes": this.remarks }
+        }
+
+        this.loading = true
+        
+        let response = await httpRequest.axiosRequest(
+          "post",
+          getBackEndServer(), 
+          CreateActions.CREATE, 
+          requestBody,
+        )
+
+        if (response.status === 200){
+          console.log("Successfully created the action")
+          this.reset()
+          this.loading = false
+        }
       } 
     }
   }

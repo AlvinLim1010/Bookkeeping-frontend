@@ -109,17 +109,13 @@ export default {
     },
     async submit() {
       if (this.amount !== null && this.selectedDate) {
-        if (this.remarks === null) {
-          this.remarks = {}
-        }
-
         var requestBody = { 
           "username": this.$store.state.user.username, 
           "date": this.selectedDate,
           "main_category": "Food",
           "sub_category": this.subAction,
           "amount": this.amount,
-          "remarks": this.remarks
+          "remarks": this.remarks === null ? {} : { "Notes": this.remarks }
         }
 
         this.loading = true

@@ -74,6 +74,10 @@
 </template>
 
 <script>
+let httpRequest = require("../../../helper/httpRequests");
+import { CreateActions } from "../../../helper/enums"
+import { getBackEndServer } from "../../../helper/commons";
+
 export default {
   props: {
     selectedDate: {
@@ -93,9 +97,34 @@ export default {
     };
   },
   methods: {
-    submit() {
-      if (this.amount !== null && this.selectedDate) {
-        console.log("submit")
+    async submit() {
+      if (this.amount !== null && this.selectedDate) {     
+        var requestBody = { 
+          "username": this.$store.state.user.username, 
+          "date": this.selectedDate,
+          "main_category": "Travel",
+          "sub_category": "Flight",
+          "amount": this.amount,
+          "remarks": {
+            ...(this.odometer !== null ? { 'Odometer': this.odometer } : {}),
+            ...(this.remarks !== null ? { 'Notes': this.remarks } : {})
+          }
+        }
+
+        this.loading = true
+        
+        let response = await httpRequest.axiosRequest(
+          "post",
+          getBackEndServer(), 
+          CreateActions.CREATE, 
+          requestBody,
+        )
+
+        if (response.status === 200){
+          console.log("Successfully created the action")
+          this.reset()
+          this.loading = false
+        }
       } 
     },
     reset() {
