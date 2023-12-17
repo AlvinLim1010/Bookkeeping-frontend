@@ -64,6 +64,12 @@
 import { FoodSubActions } from "../../helper/enums"
 
 export default {
+  props: {
+    selectedDate: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       FoodSubActions,
@@ -99,7 +105,7 @@ export default {
       this.selectedCurrency = this.currencies[0]
     },
     submit() {
-      if (this.amount !== null) {
+      if (this.amount !== null && this.selectedDate) {
         console.log("submit")
       } 
     }
@@ -107,6 +113,3 @@ export default {
 }
 
 </script>
-
-<style>
-</style>

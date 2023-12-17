@@ -30,26 +30,32 @@
 
               <FormTravelMode
                 v-show="mainAction == MainActions.TRAVEL"
+                :selectedDate="selectedDate"
                 ref="formTravelMode"
               />
               <FormFoodMode
                 v-show="mainAction == MainActions.FOOD"
+                :selectedDate="selectedDate"
                 ref="formFoodMode"
               />
               <FormHouseholdMode
                 v-show="mainAction == MainActions.HOUSEHOLD"
+                :selectedDate="selectedDate"
                 ref="formHouseholdMode"
               />
               <FormIncomeMode
                 v-show="mainAction == MainActions.INCOME"
+                :selectedDate="selectedDate"
                 ref="formIncomeMode"
               />
               <FormMiscMode
                 v-show="mainAction == MainActions.MISC"
+                :selectedDate="selectedDate"
                 ref="formMiscMode"
               />
               <FormOthersMode
                 v-show="mainAction == MainActions.OTHERS"
+                :selectedDate="selectedDate"
                 ref="formOthersMode"
               />
             </v-form>

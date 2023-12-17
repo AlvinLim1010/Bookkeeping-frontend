@@ -12,10 +12,12 @@
 
     <FormPetrolMode
       v-show="subAction == TravelSubActions.PETROL"
+      :selectedDate="selectedDate"
       ref="formPetrolMode"
     />
     <FormFlightMode
       v-show="subAction == TravelSubActions.FLIGHT"
+      :selectedDate="selectedDate"
       ref="formFlightMode"
     />
   </span>
@@ -27,6 +29,12 @@ import FormPetrolMode from "./travelActions/FormPetrolMode.vue"
 import FormFlightMode from "./travelActions/FormFlightMode.vue"
 
 export default {
+  props: {
+    selectedDate: {
+      type: String,
+      required: true,
+    },
+  },
   components: {
     FormPetrolMode,
     FormFlightMode
@@ -58,6 +66,3 @@ export default {
 }
 
 </script>
-
-<style>
-</style>

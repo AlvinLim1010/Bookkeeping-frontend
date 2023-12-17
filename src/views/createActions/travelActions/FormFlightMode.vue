@@ -73,6 +73,12 @@
   
 <script>
 export default {
+  props: {
+    selectedDate: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       loading: false,
@@ -87,7 +93,7 @@ export default {
   },
   methods: {
     submit() {
-      if (this.amount) {
+      if (this.amount && this.selectedDate) {
         console.log("submit")
       } 
     },
