@@ -22,6 +22,12 @@
       @reset-date="resetDate"
       ref="formFlightMode"
     />
+    <FormParkingMode
+      v-show="subAction == TravelSubActions.PARKING"
+      :selectedDate="selectedDate"
+      @reset-date="resetDate"
+      ref="formParkingMode"
+    />
   </span>
 </template>
 
@@ -29,6 +35,7 @@
 import { TravelSubActions } from "../../helper/enums"
 import FormPetrolMode from "./travelActions/FormPetrolMode.vue"
 import FormFlightMode from "./travelActions/FormFlightMode.vue"
+import FormParkingMode from "./travelActions/FormParkingMode.vue"
 
 export default {
   props: {
@@ -39,7 +46,8 @@ export default {
   },
   components: {
     FormPetrolMode,
-    FormFlightMode
+    FormFlightMode,
+    FormParkingMode,
   },
   data() {
     return {

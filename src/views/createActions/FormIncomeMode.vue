@@ -109,7 +109,7 @@ export default {
         var requestBody = { 
           "username": this.$store.state.user.username, 
           "date": this.selectedDate,
-          "main_category": "Food",
+          "main_category": "Income",
           "sub_category": this.subAction,
           "amount": this.amount,
           "remarks": this.remarks === null ? {} : { "Notes": this.remarks }

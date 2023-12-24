@@ -12,6 +12,7 @@ export const MainActions = {
     INCOME: "Income",
     MISC: "Misc",
     HOUSEHOLD: "Household",
+    ENTERTAINMENT: "Entertainment",
     OTHERS: "Others"
 };
 
@@ -43,6 +44,13 @@ export const HouseholdSubActions = {
     ELECTRICBILL: "Electric Bill",
     WATERBILL: "Water Bill"
 };
+
+export const EntertainmentSubActions = {
+    EVENTS: "Events",
+    SPORTING: "Sporting",
+    AMUSEMENTRIDES: "Amusement Rides"
+};
+
 
 export const RouteAuthServer = {
     LOGIN: "/user/login"

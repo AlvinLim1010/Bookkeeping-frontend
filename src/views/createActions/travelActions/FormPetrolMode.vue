@@ -103,7 +103,7 @@ export default {
           "username": this.$store.state.user.username, 
           "date": this.selectedDate,
           "main_category": "Travel",
-          "sub_category": "Flight",
+          "sub_category": "Petrol",
           "amount": this.amount,
           "remarks": {
             ...(this.odometer !== null ? { 'Odometer': this.odometer } : {}),

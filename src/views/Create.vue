@@ -58,6 +58,12 @@
                 @reset-date="resetSelectedDate"
                 ref="formMiscMode"
               />
+              <FormEntertainmentMode
+                v-show="mainAction == MainActions.ENTERTAINMENT"
+                :selectedDate="selectedDate"
+                @reset-date="resetSelectedDate"
+                ref="formEntertainmentMode"
+              />
               <FormOthersMode
                 v-show="mainAction == MainActions.OTHERS"
                 :selectedDate="selectedDate"
@@ -105,6 +111,7 @@ import FormTravelMode from "./createActions/FormTravelMode.vue"
 import FormFoodMode from "./createActions/FormFoodMode.vue"
 import FormIncomeMode from "./createActions/FormIncomeMode.vue"
 import FormMiscMode from "./createActions/FormMiscMode.vue"
+import FormEntertainmentMode from "./createActions/FormEntertainmentMode.vue"
 import FormHouseholdMode from "./createActions/FormHouseholdMode.vue"
 import FormOthersMode from "./createActions/FormOthersMode.vue"
 
@@ -123,6 +130,7 @@ export default {
     FormIncomeMode,
     FormHouseholdMode,
     FormMiscMode,
+    FormEntertainmentMode,
     FormOthersMode,
     DialogAccessProfile,
 
