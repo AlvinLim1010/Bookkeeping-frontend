@@ -19,3 +19,7 @@ export default {
 }
   
 </script>
+
+<style lang="css">
+@import 'vue-awesome-notifications/dist/styles/style.css';
+</style>

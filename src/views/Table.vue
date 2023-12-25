@@ -63,6 +63,10 @@ import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
 import UserResetPassword from '../views/users/ResetPassword.vue'
 
+let httpRequest = require("../helper/httpRequests");
+import { Actions } from "../helper/enums"
+import { getBackEndServer } from "../helper/commons";
+
 export default {
   name: "Table",
 
@@ -72,6 +76,9 @@ export default {
     UserLogin,
     UserForgetPassword,
     UserResetPassword,
+  },
+  async created() {
+    await this.getTableData()
   },
   data() {
     return {
@@ -103,6 +110,17 @@ export default {
     };
   },
   methods: {
+    async getTableData(){
+      var username = this.$store.state.user.username;
+
+      let result = await httpRequest.axiosGetRequest(
+        getBackEndServer(), 
+        Actions.GETACTIONS, 
+        { username },
+      )
+
+      console.log(result.data)
+    },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()
     },

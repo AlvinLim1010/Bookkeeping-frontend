@@ -27,7 +27,8 @@ export const TravelSubActions = {
     PETROL: "Petrol",
     FLIGHT: "Flight Ticket",
     HOTEL: "Hotel",
-    PARKING: "Parking"
+    PARKING: "Parking",
+    GRAB: "Grab",
 };
 
 export const MiscSubActions = {
@@ -56,7 +57,8 @@ export const RouteAuthServer = {
     LOGIN: "/user/login"
 };
 
-export const CreateActions = {
+export const Actions = {
+    GETACTIONS: "/actions/overview",
     CREATE: "/actions/create"
 };
   

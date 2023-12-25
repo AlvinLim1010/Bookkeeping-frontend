@@ -61,7 +61,7 @@
 
 <script>
 let httpRequest = require("../../helper/httpRequests");
-import { MiscSubActions, CreateActions } from "../../helper/enums"
+import { MiscSubActions, Actions } from "../../helper/enums"
 import { getBackEndServer } from "../../helper/commons";
 
 export default {
@@ -90,7 +90,7 @@ export default {
   computed: {
     getSubActionsOption() {
       return [
-        MiscSubActions.DOGANDPARENTS,
+        ...Object.values(MiscSubActions),
         "Others"
       ]
     }
@@ -119,7 +119,7 @@ export default {
         let response = await httpRequest.axiosRequest(
           "post",
           getBackEndServer(), 
-          CreateActions.CREATE, 
+          Actions.CREATE, 
           requestBody,
         )
 

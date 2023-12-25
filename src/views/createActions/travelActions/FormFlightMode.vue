@@ -73,7 +73,7 @@
   
 <script>
 let httpRequest = require("../../../helper/httpRequests");
-import { CreateActions } from "../../../helper/enums"
+import { Actions } from "../../../helper/enums"
 import { getBackEndServer } from "../../../helper/commons";
 
 export default {
@@ -112,7 +112,7 @@ export default {
         let response = await httpRequest.axiosRequest(
           "post",
           getBackEndServer(), 
-          CreateActions.CREATE, 
+          Actions.CREATE, 
           requestBody,
         )
 

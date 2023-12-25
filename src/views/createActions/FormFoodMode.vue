@@ -62,7 +62,7 @@
 
 <script>
 let httpRequest = require("../../helper/httpRequests");
-import { FoodSubActions, CreateActions } from "../../helper/enums"
+import { FoodSubActions, Actions } from "../../helper/enums"
 import { getBackEndServer } from "../../helper/commons";
 
 export default {
@@ -91,10 +91,7 @@ export default {
   computed: {
     getSubActionsOption() {
       return [
-        FoodSubActions.BREAKFAST,
-        FoodSubActions.LUNCH,
-        FoodSubActions.DINNER,
-        FoodSubActions.GROCERY,
+        ...Object.values(FoodSubActions),
         "Others"
       ]
     }
@@ -123,7 +120,7 @@ export default {
         let response = await httpRequest.axiosRequest(
           "post",
           getBackEndServer(), 
-          CreateActions.CREATE, 
+          Actions.CREATE, 
           requestBody,
         )
 

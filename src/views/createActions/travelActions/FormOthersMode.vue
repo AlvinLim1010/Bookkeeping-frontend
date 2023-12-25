@@ -52,7 +52,7 @@
   
   <script>
   let httpRequest = require("../../../helper/httpRequests");
-  import { CreateActions } from "../../../helper/enums"
+  import { Actions } from "../../../helper/enums"
   import { getBackEndServer } from "../../../helper/commons";
   
   export default {
@@ -61,6 +61,10 @@
         type: String,
         required: true,
       },
+      subAction: {
+        type: String,
+        required: true,
+      }
     },
     data() {
       return {
@@ -78,7 +82,7 @@
             "username": this.$store.state.user.username, 
             "date": this.selectedDate,
             "main_category": "Travel",
-            "sub_category": "Parking",
+            "sub_category": this.subAction,
             "amount": this.amount,
             "remarks": this.remarks === null ? {} : { "Notes": this.remarks }
           }
@@ -88,7 +92,7 @@
           let response = await httpRequest.axiosRequest(
             "post",
             getBackEndServer(), 
-            CreateActions.CREATE, 
+            Actions.CREATE, 
             requestBody,
           )
   
