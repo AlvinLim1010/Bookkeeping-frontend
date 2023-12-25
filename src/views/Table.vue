@@ -77,15 +77,17 @@ export default {
     UserForgetPassword,
     UserResetPassword,
   },
-  async created() {
-    await this.getTableData()
+  async mounted() {
+    if (this.$store.state.user.username){
+      await this.getTableData()
+    }
   },
   data() {
     return {
       headers: [
         { title: 'Date', align: 'center', value: 'date' },
-        { title: 'Main Action', align: 'center', value: 'mainAction' },
-        { title: 'Sub Action', align: 'center', value: 'subAction' },
+        { title: 'Main Action', align: 'center', value: 'main_category' },
+        { title: 'Sub Action', align: 'center', value: 'sub_category' },
         { title: 'Remarks', align: 'center', value: 'remarks' },
         {
           title: 'Amount',
@@ -98,14 +100,7 @@ export default {
         { title: 'Total', align: 'center', value: 'total' },
         { title: 'Actions', key: 'actions', sortable: false }
       ],
-      items: Array(15).fill({
-        date: 'African Elephant',
-        mainAction: 'Loxodonta africana',
-        subAction: 'Herbivore',
-        remarks: 'Savanna, Forests',
-        debit: 'Savanna, Forests',
-        total: 'Savanna, Forests',
-      }),
+      items: [],
       customText: CustomDialogText.ACTIONTABLE
     };
   },
@@ -119,7 +114,27 @@ export default {
         { username },
       )
 
-      console.log(result.data)
+      if (result.data.length > 0){
+        result.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        let total = 0;
+
+        this.items = result.data.map(item => {
+          const isIncome = item.main_category === 'Income';
+          const amount = parseFloat(item.amount) || 0; 
+
+          total += isIncome ? amount : -amount;
+
+          return {
+            date: item.date,
+            main_category: item.main_category,
+            sub_category: item.sub_category,
+            remarks: (typeof item.remarks === 'object' && Object.keys(item.remarks).length === 0) ? '' : item.remarks,
+            debit: isIncome ? item.amount : '', 
+            credit: !isIncome ? item.amount : '', 
+            total: total.toFixed(2),
+          };
+        });
+      }
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()

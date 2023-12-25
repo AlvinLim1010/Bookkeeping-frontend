@@ -58,7 +58,8 @@ export const RouteAuthServer = {
 };
 
 export const Actions = {
-    GETACTIONS: "/actions/overview",
+    ACTIONSOVERVIEW: "/actions/overview",
+    GETACTIONS: "/actions",
     CREATE: "/actions/create"
 };
   

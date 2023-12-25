@@ -6,7 +6,8 @@ const awn = new AwesomeNotifications();
 
 module.exports = {
   axiosRequest,
-  axiosGetRequest
+  axiosGetRequest,
+  awn 
 };
 
 async function axiosRequest(method, url, route, body) {
@@ -18,9 +19,8 @@ async function axiosRequest(method, url, route, body) {
       url: host,
       data: body
     });
-
     if (response != null) {
-      awn.success(response);
+      awn.success("Requests handled successfully");
       return response;
     }
   } catch (error) {
@@ -52,7 +52,6 @@ async function axiosGetRequest(url, route, params = {}) {
       awn.alert("Client Error: " + JSON.stringify(error.response.data));
       return error.response;
     }
-    console.log("HI")
     awn.alert("Network Error: " + JSON.stringify(error.config.url));
     return error.response;
   }

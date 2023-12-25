@@ -98,28 +98,43 @@ export default {
   methods: {
     async submit() {
       if (this.amount && this.selectedDate) {
-        var requestBody = { 
-          "username": this.$store.state.user.username, 
-          "date": this.selectedDate,
-          "main_category": "Travel",
-          "sub_category": "Flight",
-          "amount": this.amount,
-          "remarks": this.remarks === null ? {} : { "Notes": this.remarks }
-        }
+        if ((!this.fromAirport && this.toAirport) || (this.fromAirport && !this.toAirport)){
+          httpRequest.awn.alert("Please enter the details of both airports")
+        } else {
+          var requestBody = { 
+            "username": this.$store.state.user.username, 
+            "date": this.selectedDate,
+            "main_category": "Travel",
+            "sub_category": "Flight",
+            "amount": this.amount,
+            "remarks": {
+              ...(this.fromAirport !== null
+                ? this.roundTrip
+                  ? { 'Location': `Round Trip ${this.fromAirport} - ${this.toAirport}` }
+                  : { 'Location': `One Way ${this.fromAirport} - ${this.toAirport}` }
+                : {}
+              ),
+              ...(this.remarks !== null
+                ? { 'Notes': this.remarks }
+                : {}
+              )
+            }
+          }
+          console.log(requestBody)
 
-        this.loading = true
-        
-        let response = await httpRequest.axiosRequest(
-          "post",
-          getBackEndServer(), 
-          Actions.CREATE, 
-          requestBody,
-        )
+          // this.loading = true
+          
+          // let response = await httpRequest.axiosRequest(
+          //   "post",
+          //   getBackEndServer(), 
+          //   Actions.CREATE, 
+          //   requestBody,
+          // )
 
-        if (response.status === 200){
-          console.log("Successfully created the action")
-          this.reset()
-          this.loading = false
+          // if (response.status === 200){
+          //   this.reset()
+          // }
+          // this.loading = false
         }
       } 
     },

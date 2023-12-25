@@ -109,10 +109,9 @@ export default {
         )
 
         if (response.status === 200){
-          console.log("Successfully created the action")
           this.reset()
-          this.loading = false
         }
+        this.loading = false
       } 
     }
   }
