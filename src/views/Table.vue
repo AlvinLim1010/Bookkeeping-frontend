@@ -12,7 +12,7 @@
           <v-icon
             size="small"
             class="me-2"
-            @click="editItem(item)"
+            @click="updateItem(item)"
           >
             mdi-pencil
           </v-icon>
@@ -37,22 +37,26 @@
     </v-card>
   </v-container>
 
+  <DeleteActionsDialogs
+    ref="deleteActionsDialogs" 
+  />
+
   <UserRegister 
-      @open-login="openLoginDialog"
-      ref="userRegister" 
-    />
-    <UserLogin 
-      @open-register="openRegisterDialog"
-      @open-forgetpassword="openForgetPasswordDialog"
-      ref="userLogin"
-    />
-    <UserForgetPassword 
-      @open-login="openLoginDialog"
-      ref="userForgetPassword"
-    />
-    <UserResetPassword 
-      ref="userResetPassword"
-    />
+    @open-login="openLoginDialog"
+    ref="userRegister" 
+  />
+  <UserLogin 
+    @open-register="openRegisterDialog"
+    @open-forgetpassword="openForgetPasswordDialog"
+    ref="userLogin"
+  />
+  <UserForgetPassword 
+    @open-login="openLoginDialog"
+    ref="userForgetPassword"
+  />
+  <UserResetPassword 
+    ref="userResetPassword"
+  />
 </template>
 
 <script>
@@ -62,6 +66,8 @@ import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
 import UserResetPassword from '../views/users/ResetPassword.vue'
+
+import DeleteActionsDialogs from '../views/dialogs/DeleteActionsDialogs.vue'
 
 let httpRequest = require("../helper/httpRequests");
 import { Actions } from "../helper/enums"
@@ -76,6 +82,7 @@ export default {
     UserLogin,
     UserForgetPassword,
     UserResetPassword,
+    DeleteActionsDialogs,
   },
   async mounted() {
     if (this.$store.state.user.username){
@@ -124,17 +131,32 @@ export default {
 
           total += isIncome ? amount : -amount;
 
+          const date = new Date(item.date)
+          const formattedDate = date.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          });
+
           return {
-            date: item.date,
+            id: item.id,
+            date: formattedDate,
             main_category: item.main_category,
             sub_category: item.sub_category,
             remarks: (typeof item.remarks === 'object' && Object.keys(item.remarks).length === 0) ? '' : item.remarks,
             debit: isIncome ? item.amount : '', 
             credit: !isIncome ? item.amount : '', 
+            amount: item.amount,
             total: total.toFixed(2),
           };
         });
       }
+    },
+    deleteItem(item){
+      this.$refs.deleteActionsDialogs.openDialog(item)
+    },
+    updateItem(item){
+      this.$refs.deleteActionsDialogs.openDialog(item)
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()
