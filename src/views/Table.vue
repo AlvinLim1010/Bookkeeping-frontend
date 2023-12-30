@@ -41,6 +41,10 @@
     ref="deleteActionsDialogs" 
   />
 
+  <UpdateActionsDialogs
+    ref="updateActionsDialogs" 
+  />
+
   <UserRegister 
     @open-login="openLoginDialog"
     ref="userRegister" 
@@ -67,6 +71,7 @@ import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
 import UserResetPassword from '../views/users/ResetPassword.vue'
 
+import UpdateActionsDialogs from '../views/dialogs/UpdateActionsDialogs'
 import DeleteActionsDialogs from '../views/dialogs/DeleteActionsDialogs.vue'
 
 let httpRequest = require("../helper/httpRequests");
@@ -82,6 +87,7 @@ export default {
     UserLogin,
     UserForgetPassword,
     UserResetPassword,
+    UpdateActionsDialogs,
     DeleteActionsDialogs,
   },
   async mounted() {
@@ -122,7 +128,7 @@ export default {
       )
 
       if (result.data.length > 0){
-        result.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        result.data.sort((a, b) => new Date(b.date) - new Date(b.date));
         let total = 0;
 
         this.items = result.data.map(item => {
@@ -150,13 +156,15 @@ export default {
             total: total.toFixed(2),
           };
         });
+
+        this.items.reverse();
       }
     },
     deleteItem(item){
       this.$refs.deleteActionsDialogs.openDialog(item)
     },
     updateItem(item){
-      this.$refs.deleteActionsDialogs.openDialog(item)
+      this.$refs.updateActionsDialogs.openDialog(item)
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()
