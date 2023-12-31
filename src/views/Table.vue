@@ -37,20 +37,28 @@
     </v-card>
   </v-container>
 
-  <DeleteActionsDialogs
-    ref="deleteActionsDialogs" 
+  <DeleteNormalActionsDialogs
+    ref="deleteNormalActionsDialogs" 
   />
 
-  <NormalActionsDialogs
-    ref="normalActionsDialogs" 
+  <DeleteFlightActionsDialogs
+    ref="deleteFlightActionsDialogs" 
   />
 
-  <PetrolActionsDialogs
-    ref="petrolActionsDialogs" 
+  <DeletePetrolActionsDialogs
+    ref="deletePetrolActionsDialogs" 
   />
 
-  <FlightActionsDialogs
-    ref="flightActionsDialogs" 
+  <UpdateNormalActionsDialogs
+    ref="updateNormalActionsDialogs" 
+  />
+
+  <UpdatePetrolActionsDialogs
+    ref="updatePetrolActionsDialogs" 
+  />
+
+  <UpdateFlightActionsDialogs
+    ref="updateFlightActionsDialogs" 
   />
 
   <UserRegister 
@@ -79,10 +87,12 @@ import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
 import UserResetPassword from '../views/users/ResetPassword.vue'
 
-import NormalActionsDialogs from '../views/dialogs/updateDialogs/NormalActionsDialogs.vue'
-import PetrolActionsDialogs from '../views/dialogs/updateDialogs/PetrolActionsDialogs.vue'
-import FlightActionsDialogs from '../views/dialogs/updateDialogs/FlightActionsDialogs.vue'
-import DeleteActionsDialogs from '../views/dialogs/DeleteActionsDialogs.vue'
+import UpdateNormalActionsDialogs from '../views/dialogs/updateDialogs/NormalActionsDialogs.vue'
+import UpdatePetrolActionsDialogs from '../views/dialogs/updateDialogs/PetrolActionsDialogs.vue'
+import UpdateFlightActionsDialogs from '../views/dialogs/updateDialogs/FlightActionsDialogs.vue'
+import DeleteNormalActionsDialogs from '../views/dialogs/deleteDialogs/NormalActionsDialogs.vue'
+import DeletePetrolActionsDialogs from '../views/dialogs/deleteDialogs/PetrolActionsDialogs.vue'
+import DeleteFlightActionsDialogs from '../views/dialogs/deleteDialogs/FlightActionsDialogs.vue'
 
 let httpRequest = require("../helper/httpRequests");
 import { Actions, TravelSubActions } from "../helper/enums"
@@ -97,10 +107,12 @@ export default {
     UserLogin,
     UserForgetPassword,
     UserResetPassword,
-    NormalActionsDialogs,
-    PetrolActionsDialogs,
-    FlightActionsDialogs,
-    DeleteActionsDialogs,
+    UpdateNormalActionsDialogs,
+    UpdatePetrolActionsDialogs,
+    UpdateFlightActionsDialogs,
+    DeleteNormalActionsDialogs,
+    DeletePetrolActionsDialogs,
+    DeleteFlightActionsDialogs,
   },
   async mounted() {
     if (this.$store.state.user.username){
@@ -140,7 +152,7 @@ export default {
       )
 
       if (result.data.length > 0){
-        result.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        result.data.sort((a, b) => new Date(a.date) - new Date(b.date));
         let total = 0;
 
         this.items = result.data.map(item => {
@@ -167,18 +179,26 @@ export default {
             total: total.toFixed(2),
           };
         });
+
+        this.items.reverse()
       }
     },
     deleteItem(item){
-      this.$refs.deleteActionsDialogs.openDialog(item)
+      if (item.sub_category === TravelSubActions.FLIGHT){
+        this.$refs.deleteFlightActionsDialogs.openDialog(item)
+      } else if (item.sub_category === TravelSubActions.PETROL){
+        this.$refs.deletePetrolActionsDialogs.openDialog(item)
+      } else {
+        this.$refs.deleteNormalActionsDialogs.openDialog(item)
+      }
     },
     updateItem(item){
       if (item.sub_category === TravelSubActions.FLIGHT){
-        this.$refs.flightActionsDialogs.openDialog(item)
+        this.$refs.updateFlightActionsDialogs.openDialog(item)
       } else if (item.sub_category === TravelSubActions.PETROL){
-        this.$refs.petrolActionsDialogs.openDialog(item)
+        this.$refs.updatePetrolActionsDialogs.openDialog(item)
       } else {
-        this.$refs.normalActionsDialogs.openDialog(item)
+        this.$refs.updateNormalActionsDialogs.openDialog(item)
       }
     },
     openLoginDialog(){

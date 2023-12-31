@@ -37,6 +37,7 @@
             <v-text-field
               v-model="updateInput.amount"
               label="Amount"
+              type="number"
               rounded
               filled
             />

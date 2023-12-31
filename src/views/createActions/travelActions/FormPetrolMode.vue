@@ -6,6 +6,7 @@
         style="width: 44%;"
         v-model="odometer"
         label="Odometer"
+        type="number"
         filled
       ></v-text-field>
       <v-select

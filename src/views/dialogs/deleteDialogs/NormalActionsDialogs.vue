@@ -120,7 +120,7 @@ export default {
       this.main_category = item.main_category
       this.sub_category = item.sub_category
       this.amount = item.amount
-      this.remarks = item.remarks
+      this.remarks = item.remarks['Notes']
     },
     closeDialog() {
       this.dialog = false;

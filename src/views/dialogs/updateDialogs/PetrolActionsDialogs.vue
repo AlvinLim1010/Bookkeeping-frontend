@@ -37,6 +37,7 @@
             <v-text-field
               v-model="updateInput.amount"
               label="Amount"
+              type="number"
               rounded
               filled
             />
@@ -47,6 +48,7 @@
           <v-col>
             <v-text-field
               v-model="updateInput.odometer"
+              type="number"
               label="Odometer"
               rounded
               filled

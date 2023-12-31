@@ -37,6 +37,7 @@
             <v-text-field
               v-model="updateInput.amount"
               label="Amount"
+              type="number"
               rounded
               filled
             />
@@ -158,8 +159,6 @@ export default {
         .split("/")
         .reverse()
         .join("-");
-
-      console.log(item.remarks["Location"].split(" "));
 
       this.initialInput.id = this.updateInput.id = item.id;
       this.initialInput.date = this.updateInput.date = formattedDate;
