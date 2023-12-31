@@ -25,7 +25,7 @@ export const FoodSubActions = {
 
 export const TravelSubActions = {
     PETROL: "Petrol",
-    FLIGHT: "Flight Ticket",
+    FLIGHT: "Flight",
     HOTEL: "Hotel",
     PARKING: "Parking",
     GRAB: "Grab",
@@ -37,7 +37,8 @@ export const MiscSubActions = {
 
 export const IncomeSubActions = {
     SALARY: "Salary",
-    BIRTHDAY: "Birthday Gift"
+    BIRTHDAY: "Birthday Gift",
+    REIMBURSEMENT: "Reimbursement"
 };
 
 export const HouseholdSubActions = {

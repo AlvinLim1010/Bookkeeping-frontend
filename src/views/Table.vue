@@ -41,8 +41,16 @@
     ref="deleteActionsDialogs" 
   />
 
-  <UpdateActionsDialogs
-    ref="updateActionsDialogs" 
+  <NormalActionsDialogs
+    ref="normalActionsDialogs" 
+  />
+
+  <PetrolActionsDialogs
+    ref="petrolActionsDialogs" 
+  />
+
+  <FlightActionsDialogs
+    ref="flightActionsDialogs" 
   />
 
   <UserRegister 
@@ -71,11 +79,13 @@ import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
 import UserResetPassword from '../views/users/ResetPassword.vue'
 
-import UpdateActionsDialogs from '../views/dialogs/UpdateActionsDialogs'
+import NormalActionsDialogs from '../views/dialogs/updateDialogs/NormalActionsDialogs.vue'
+import PetrolActionsDialogs from '../views/dialogs/updateDialogs/PetrolActionsDialogs.vue'
+import FlightActionsDialogs from '../views/dialogs/updateDialogs/FlightActionsDialogs.vue'
 import DeleteActionsDialogs from '../views/dialogs/DeleteActionsDialogs.vue'
 
 let httpRequest = require("../helper/httpRequests");
-import { Actions } from "../helper/enums"
+import { Actions, TravelSubActions } from "../helper/enums"
 import { getBackEndServer } from "../helper/commons";
 
 export default {
@@ -87,7 +97,9 @@ export default {
     UserLogin,
     UserForgetPassword,
     UserResetPassword,
-    UpdateActionsDialogs,
+    NormalActionsDialogs,
+    PetrolActionsDialogs,
+    FlightActionsDialogs,
     DeleteActionsDialogs,
   },
   async mounted() {
@@ -128,7 +140,7 @@ export default {
       )
 
       if (result.data.length > 0){
-        result.data.sort((a, b) => new Date(b.date) - new Date(b.date));
+        result.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         let total = 0;
 
         this.items = result.data.map(item => {
@@ -136,7 +148,6 @@ export default {
           const amount = parseFloat(item.amount) || 0; 
 
           total += isIncome ? amount : -amount;
-
           const date = new Date(item.date)
           const formattedDate = date.toLocaleDateString('en-GB', {
             day: '2-digit',
@@ -156,15 +167,19 @@ export default {
             total: total.toFixed(2),
           };
         });
-
-        this.items.reverse();
       }
     },
     deleteItem(item){
       this.$refs.deleteActionsDialogs.openDialog(item)
     },
     updateItem(item){
-      this.$refs.updateActionsDialogs.openDialog(item)
+      if (item.sub_category === TravelSubActions.FLIGHT){
+        this.$refs.flightActionsDialogs.openDialog(item)
+      } else if (item.sub_category === TravelSubActions.PETROL){
+        this.$refs.petrolActionsDialogs.openDialog(item)
+      } else {
+        this.$refs.normalActionsDialogs.openDialog(item)
+      }
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()

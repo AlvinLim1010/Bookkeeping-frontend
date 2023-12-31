@@ -61,7 +61,7 @@
 
 <script>
 let httpRequest = require("../../helper/httpRequests");
-import { HouseholdSubActions, Actions } from "../../helper/enums"
+import { HouseholdSubActions, Actions, MainActions } from "../../helper/enums"
 import { getBackEndServer } from "../../helper/commons";
 
 export default {
@@ -108,7 +108,7 @@ export default {
         var requestBody = { 
           "username": this.$store.state.user.username, 
           "date": this.selectedDate,
-          "main_category": "Household",
+          "main_category": MainActions.HOUSEHOLD,
           "sub_category": this.subAction,
           "amount": this.amount,
           "remarks": this.remarks === null ? {} : { "Notes": this.remarks }

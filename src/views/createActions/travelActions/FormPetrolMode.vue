@@ -75,7 +75,7 @@
 
 <script>
 let httpRequest = require("../../../helper/httpRequests");
-import { Actions } from "../../../helper/enums"
+import { Actions, MainActions, TravelSubActions } from "../../../helper/enums"
 import { getBackEndServer } from "../../../helper/commons";
 
 export default {
@@ -102,8 +102,8 @@ export default {
         var requestBody = { 
           "username": this.$store.state.user.username, 
           "date": this.selectedDate,
-          "main_category": "Travel",
-          "sub_category": "Petrol",
+          "main_category": MainActions.TRAVEL,
+          "sub_category": TravelSubActions.PETROL,
           "amount": this.amount,
           "remarks": {
             ...(this.odometer !== null ? { 'Odometer': this.odometer } : {}),

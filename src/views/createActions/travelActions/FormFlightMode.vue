@@ -73,7 +73,7 @@
   
 <script>
 let httpRequest = require("../../../helper/httpRequests");
-import { Actions } from "../../../helper/enums"
+import { Actions, MainActions, TravelSubActions } from "../../../helper/enums"
 import { getBackEndServer } from "../../../helper/commons";
 
 export default {
@@ -104,8 +104,8 @@ export default {
           var requestBody = { 
             "username": this.$store.state.user.username, 
             "date": this.selectedDate,
-            "main_category": "Travel",
-            "sub_category": "Flight",
+            "main_category": MainActions.TRAVEL,
+            "sub_category": TravelSubActions.FLIGHT,
             "amount": this.amount,
             "remarks": {
               ...(this.fromAirport !== null
@@ -120,21 +120,20 @@ export default {
               )
             }
           }
-          console.log(requestBody)
 
-          // this.loading = true
+          this.loading = true
           
-          // let response = await httpRequest.axiosRequest(
-          //   "post",
-          //   getBackEndServer(), 
-          //   Actions.CREATE, 
-          //   requestBody,
-          // )
+          let response = await httpRequest.axiosRequest(
+            "post",
+            getBackEndServer(), 
+            Actions.CREATE, 
+            requestBody,
+          )
 
-          // if (response.status === 200){
-          //   this.reset()
-          // }
-          // this.loading = false
+          if (response.status === 200){
+            this.reset()
+          }
+          this.loading = false
         }
       } 
     },

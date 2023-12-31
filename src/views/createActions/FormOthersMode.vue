@@ -62,7 +62,7 @@
 
 <script>
 let httpRequest = require("../../helper/httpRequests");
-import { Actions } from "../../helper/enums"
+import { Actions, MainActions } from "../../helper/enums"
 import { getBackEndServer } from "../../helper/commons";
 
 export default {
@@ -93,7 +93,7 @@ export default {
         var requestBody = { 
           "username": this.$store.state.user.username, 
           "date": this.selectedDate,
-          "main_category": "Others",
+          "main_category": MainActions.OTHERS,
           "sub_category": this.subAction,
           "amount": this.amount,
           "remarks": this.remarks === null ? {} : { "Notes": this.remarks }

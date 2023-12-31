@@ -61,7 +61,7 @@
 
 <script>
 let httpRequest = require("../../helper/httpRequests");
-import { IncomeSubActions, Actions } from "../../helper/enums"
+import { IncomeSubActions, Actions, MainActions } from "../../helper/enums"
 import { getBackEndServer } from "../../helper/commons";
 
 export default {
@@ -108,7 +108,7 @@ export default {
         var requestBody = { 
           "username": this.$store.state.user.username, 
           "date": this.selectedDate,
-          "main_category": "Income",
+          "main_category": MainActions.INCOME,
           "sub_category": this.subAction,
           "amount": this.amount,
           "remarks": this.remarks === null ? {} : { "Notes": this.remarks }
