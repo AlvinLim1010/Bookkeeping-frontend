@@ -83,7 +83,10 @@
   </v-dialog>
 </template>
   
-  <script>
+<script>
+let httpRequest = require("../../../helper/httpRequests");
+import { Actions } from "../../../helper/enums"
+import { getBackEndServer } from "../../../helper/commons";
 
 export default {
   data() {
@@ -101,7 +104,21 @@ export default {
   },
   methods: {
     async btnConfirm() {
-      console.log("CONFIRM")
+      var requestBody = { 
+        "action_id": this.id
+      }
+
+      let response = await httpRequest.axiosRequest(
+        "delete",
+        getBackEndServer(), 
+        Actions.DELETE, 
+        requestBody,
+      )
+
+      if (response.status === 200){
+        this.$emit("removeData", this.id)
+        this.closeDialog()
+      }
     },
     disableConfirm() {
       if (!this.checkbox) {

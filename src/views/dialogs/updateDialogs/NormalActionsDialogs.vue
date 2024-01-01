@@ -14,7 +14,7 @@
           </v-col>
           <v-col>
             <v-text-field
-              v-model="updateInput.main_category"
+              v-model="main_category"
               label="Main Category"
               rounded
               filled
@@ -26,7 +26,7 @@
         <v-row>
           <v-col>
             <v-text-field
-              v-model="updateInput.sub_category"
+              v-model="sub_category"
               label="Sub Category"
               rounded
               filled
@@ -59,6 +59,11 @@
           <v-col>
             <v-alert border="top" color="green" dark>
               <v-checkbox v-model="checkbox" :label="getText()" color="white" />
+              <v-list v-if="Object.keys(valueChanged).length > 0" style="background-color: limegreen;">
+                <v-list-item v-for="(value, key) in valueChanged" :key="key">
+                  <v-list-item-subtitle>{{ key }}: {{ value }}</v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
             </v-alert>
           </v-col>
         </v-row>
@@ -82,36 +87,91 @@
   </v-dialog>
 </template>
   
-  <script>
+<script>
+let httpRequest = require("../../../helper/httpRequests");
+import { Actions } from "../../../helper/enums"
+import { getBackEndServer } from "../../../helper/commons";
 
 export default {
   data() {
     return {
       dialog: false,
       checkbox: false,
-      
-      initialInput: {
+        id: null,
         id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
+      id: null,
+        date: null,
+      main_category: null,
+      sub_category: null,
+      valueChanged: {},
+      requestBody: {},
+      
+      initialInput: {
+        date: null,
         amount: null,
         remarks: null,
       },
 
       updateInput: {
-        id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
         amount: null,
         remarks: null,
       }
     }
   },
+  watch: {
+    "updateInput.date": function(newValue, oldValue) {
+      if (this.initialInput.date !== newValue){
+        this.valueChanged.date = `${this.initialInput.date} => ${newValue}`
+      } else {
+        delete this.valueChanged.date
+      }
+    },
+    "updateInput.amount": function(newValue, oldValue) {
+      if (this.initialInput.amount !== parseFloat(newValue)){
+        this.valueChanged.amount = `${this.initialInput.amount} => ${newValue}`
+      } else {
+        delete this.valueChanged.amount
+      }
+    },
+    "updateInput.remarks": function(newValue, oldValue) {
+      if (this.initialInput.remarks !== newValue){
+        this.valueChanged.remarks = `${this.initialInput.remarks} => ${newValue}`
+      } else {
+        delete this.valueChanged.remarks
+      }
+    },
+  },
   methods: {
     async btnConfirm() {
-      console.log("CONFIRM")
+      if (Object.keys(this.valueChanged).length > 0){
+        this.requestBody["action_id"] = this.id
+        for (const key in this.valueChanged){
+          if (key === "remarks"){
+            this.requestBody[key] = {
+              "Notes": this.updateInput[key]
+            }
+          } else {
+            this.requestBody[key] = this.updateInput[key]
+          }
+        }
+
+        let response = await httpRequest.axiosRequest(
+          "patch",
+          getBackEndServer(), 
+          Actions.UPDATE, 
+          this.requestBody,
+        )
+
+        if (response.status === 200){
+          this.$emit("refreshData")
+          this.closeDialog()
+        }
+
+      } else {
+        httpRequest.awn.alert("There is nothing to be changed")
+      }
     },
     disableConfirm() {
       if (!this.checkbox) {
@@ -131,10 +191,10 @@ export default {
         day: '2-digit'
       }).split('/').reverse().join('-');
 
-      this.initialInput.id = this.updateInput.id = item.id
+      this.id = item.id
       this.initialInput.date = this.updateInput.date = formattedDate
-      this.initialInput.main_category = this.updateInput.main_category = item.main_category
-      this.initialInput.sub_category = this.updateInput.sub_category = item.sub_category
+      this.main_category = item.main_category
+      this.sub_category = item.sub_category
       this.initialInput.amount = this.updateInput.amount = item.amount
       this.initialInput.remarks = this.updateInput.remarks = item.remarks['Notes']
     },
@@ -144,21 +204,20 @@ export default {
     },
     reset(){
       this.checkbox = false;
+      this.id = null;
+      this.main_category = null;
+      this.sub_category = null;
+      this.valueChanged = {}
+      this.requestBody = {}
 
       this.updateInput = {
-        id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
         amount: null,
         remarks: null,
       }
 
       this.initialInput = {
-        id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
         amount: null,
         remarks: null,
       }

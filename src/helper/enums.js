@@ -32,7 +32,8 @@ export const TravelSubActions = {
 };
 
 export const MiscSubActions = {
-    DOGANDPARENTS: "Dog Foods + Treat Parents"
+    DOGANDPARENTS: "Dog Foods + Treat Parents",
+    HEALTHCARE: "Healthcare"
 };
 
 export const IncomeSubActions = {
@@ -61,6 +62,8 @@ export const RouteAuthServer = {
 export const Actions = {
     ACTIONSOVERVIEW: "/actions/overview",
     GETACTIONS: "/actions",
-    CREATE: "/actions/create"
+    CREATE: "/actions/create",
+    DELETE: "/actions/delete",
+    UPDATE: "/actions/update"
 };
   

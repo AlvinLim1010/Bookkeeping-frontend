@@ -14,7 +14,7 @@
           </v-col>
           <v-col>
             <v-text-field
-              v-model="updateInput.main_category"
+              v-model="main_category"
               label="Main Category"
               rounded
               filled
@@ -26,7 +26,7 @@
         <v-row>
           <v-col>
             <v-text-field
-              v-model="updateInput.sub_category"
+              v-model="sub_category"
               label="Sub Category"
               rounded
               filled
@@ -79,6 +79,11 @@
           <v-col>
             <v-alert border="top" color="green" dark>
               <v-checkbox v-model="checkbox" :label="getText()" color="white" />
+              <v-list v-if="Object.keys(valueChanged).length > 0" style="background-color: limegreen;">
+                <v-list-item v-for="(value, key) in valueChanged" :key="key">
+                  <v-list-item-subtitle>{{ key }}: {{ value }}</v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
             </v-alert>
           </v-col>
         </v-row>
@@ -102,18 +107,24 @@
   </v-dialog>
 </template>
     
-    <script>
+<script>
+let httpRequest = require("../../../helper/httpRequests");
+import { Actions } from "../../../helper/enums"
+import { getBackEndServer } from "../../../helper/commons";
+
 export default {
   data() {
     return {
       dialog: false,
       checkbox: false,
+      id: null,
+      main_category: null,
+      sub_category: null,
+      valueChanged: {},
+      requestBody: {},
 
       initialInput: {
-        id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
         amount: null,
         fromAirport: null,
         toAirport: null,
@@ -122,10 +133,7 @@ export default {
       },
 
       updateInput: {
-        id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
         amount: null,
         fromAirport: null,
         toAirport: null,
@@ -134,9 +142,106 @@ export default {
       },
     };
   },
+  watch: {
+    "updateInput.date": function(newValue, oldValue) {
+      if (this.initialInput.date !== newValue){
+        this.valueChanged.date = `${this.initialInput.date} => ${newValue}`
+      } else {
+        delete this.valueChanged.date
+      }
+    },
+    "updateInput.amount": function(newValue, oldValue) {
+      if (this.initialInput.amount !== parseInt(newValue)){
+        this.valueChanged.amount = `${this.initialInput.amount} => ${newValue}`
+      } else {
+        delete this.valueChanged.amount
+      }
+    },
+    "updateInput.fromAirport": function(newValue, oldValue) {
+      if (this.initialInput.fromAirport !== newValue){
+        this.valueChanged.fromAirport = `${this.initialInput.fromAirport} => ${newValue}`
+      } else {
+        delete this.valueChanged.fromAirport
+      }
+    },
+    "updateInput.toAirport": function(newValue, oldValue) {
+      if (this.initialInput.toAirport !== newValue){
+        this.valueChanged.toAirport = `${this.initialInput.toAirport} => ${newValue}`
+      } else {
+        delete this.valueChanged.toAirport
+      }
+    },
+    "updateInput.roundTrip": function(newValue, oldValue) {
+      if (this.initialInput.roundTrip !== newValue){
+        this.valueChanged.roundTrip = `${this.initialInput.roundTrip} => ${newValue}`
+      } else {
+        delete this.valueChanged.roundTrip
+      }
+    },
+    "updateInput.remarks": function(newValue, oldValue) {
+      if (this.initialInput.remarks !== newValue){
+        this.valueChanged.remarks = `${this.initialInput.remarks} => ${newValue}`
+      } else {
+        delete this.valueChanged.remarks
+      }
+    },
+  },
   methods: {
     async btnConfirm() {
-      console.log("CONFIRM");
+      if (Object.keys(this.valueChanged).length > 0){
+        var updatedLocation = {}
+
+        this.requestBody["action_id"] = this.id
+        for (const key in this.valueChanged){
+          if (key === "remarks" || key === "fromAirport" || key === "toAirport" || key === "roundTrip") {
+            if (!this.requestBody["remarks"]) {
+              this.requestBody["remarks"] = {};
+            }
+
+            if (key === "remarks") {
+              this.requestBody[key]["Notes"] = this.updateInput[key];
+            } else if (key === "fromAirport" || key === "toAirport" || key === "roundTrip") {
+              updatedLocation[key] = this.updateInput[key];
+            }
+          } else {
+            this.requestBody[key] = this.updateInput[key]
+          }
+        }
+
+        // Update the location remarks
+        const trip = updatedLocation["roundTrip"] !== undefined ? (updatedLocation["roundTrip"]? "Round Trip" : "One Way") : 
+          (this.initialInput.roundTrip ? "Round Trip" : "One Way")
+
+        const from = updatedLocation["fromAirport"] !== undefined ? updatedLocation["fromAirport"] : this.initialInput.fromAirport
+        const to = updatedLocation["toAirport"] !== undefined ? updatedLocation["toAirport"] : this.initialInput.toAirport
+
+        this.requestBody["remarks"]["Location"] = `${trip} ${from}-${to}`
+
+
+        // Check the remarks keys that are not changed
+        if (this.requestBody["remarks"] && (this.initialInput.remarks || this.initialInput.fromAirport)){
+          if (!this.requestBody["remarks"]['Notes']){
+            this.requestBody["remarks"]["Notes"] = this.initialInput.remarks
+          }
+          if (!this.requestBody["remarks"]['Location'] && this.initialInput.fromAirport) {
+            this.requestBody["remarks"]["Location"] = this.initialInput.fromAirport
+          }
+        }
+
+        let response = await httpRequest.axiosRequest(
+          "patch",
+          getBackEndServer(), 
+          Actions.UPDATE, 
+          this.requestBody,
+        )
+
+        if (response.status === 200){
+          this.$emit("refreshData")
+          this.closeDialog()
+        }
+      } else {
+        httpRequest.awn.alert("There is nothing to be changed")
+      }
     },
     disableConfirm() {
       if (!this.checkbox) {
@@ -160,21 +265,19 @@ export default {
         .reverse()
         .join("-");
 
-      this.initialInput.id = this.updateInput.id = item.id;
+      this.id = item.id;
       this.initialInput.date = this.updateInput.date = formattedDate;
-      this.initialInput.main_category = this.updateInput.main_category =
-        item.main_category;
-      this.initialInput.sub_category = this.updateInput.sub_category =
-        item.sub_category;
+      this.main_category = item.main_category;
+      this.sub_category = item.sub_category;
       this.initialInput.amount = this.updateInput.amount = item.amount;
       this.initialInput.fromAirport = this.updateInput.fromAirport =
-        item.remarks["Location"].split(" ")[2];
+        item.remarks["Location"] ? (item.remarks["Location"].split(" ")[2]) : null;
       this.initialInput.toAirport = this.updateInput.toAirport =
-        item.remarks["Location"].split(" ")[4];
+        item.remarks["Location"] ? (item.remarks["Location"].split(" ")[4]) : null;
       this.initialInput.roundTrip = this.updateInput.roundTrip =
-        item.remarks["Location"].split(" ")[0] === "Round" ? true : false;
+        item.remarks["Location"] ? (item.remarks["Location"].split(" ")[0] === "Round" ? true : false) : null;
       this.initialInput.remarks = this.updateInput.remarks =
-        item.remarks["Notes"];
+        item.remarks["Notes"] ? item.remarks['Notes'] : null;
     },
     closeDialog() {
       this.dialog = false;
@@ -182,12 +285,14 @@ export default {
     },
     reset() {
       this.checkbox = false;
+      this.id = null,
+      this.main_category = null;
+      this.sub_category = null;
+      this.valueChanged = {};
+      this.requestBody = {};
 
       this.updateInput = {
-        id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
         amount: null,
         fromAirport: null,
         toAirport: null,
@@ -196,10 +301,7 @@ export default {
       };
 
       this.initialInput = {
-        id: null,
         date: null,
-        main_category: null,
-        sub_category: null,
         amount: null,
         fromAirport: null,
         toAirport: null,

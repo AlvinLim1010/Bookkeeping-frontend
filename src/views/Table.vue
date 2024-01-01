@@ -8,6 +8,20 @@
         :fixed-header="true"
         v-if="this.$store.state.user.username"
       >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>My Data Table</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn
+                class="ma-1"
+                @click="refreshData()"
+              >
+                <v-icon>mdi-restart</v-icon>
+                <span>Refresh</span>
+              </v-btn>
+          </v-toolbar>
+        </template>
+
         <template v-slot:item.actions="{ item }">
           <v-icon
             size="small"
@@ -38,26 +52,32 @@
   </v-container>
 
   <DeleteNormalActionsDialogs
+    @removeData = "removeData"
     ref="deleteNormalActionsDialogs" 
   />
 
   <DeleteFlightActionsDialogs
+    @removeData = "removeData"
     ref="deleteFlightActionsDialogs" 
   />
 
   <DeletePetrolActionsDialogs
+    @removeData = "removeData"
     ref="deletePetrolActionsDialogs" 
   />
 
   <UpdateNormalActionsDialogs
+    @refreshData = "refreshData"
     ref="updateNormalActionsDialogs" 
   />
 
   <UpdatePetrolActionsDialogs
+    @refreshData = "refreshData"
     ref="updatePetrolActionsDialogs" 
   />
 
   <UpdateFlightActionsDialogs
+    @refreshData = "refreshData"
     ref="updateFlightActionsDialogs" 
   />
 
@@ -142,6 +162,12 @@ export default {
     };
   },
   methods: {
+    removeData(action_id){
+      this.items = this.items.filter(item => item.id !== action_id)
+    },
+    async refreshData(){
+      await this.getTableData()
+    },
     async getTableData(){
       var username = this.$store.state.user.username;
 
