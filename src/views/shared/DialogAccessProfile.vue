@@ -43,7 +43,7 @@ export default {
         case CustomDialogText.PROFILEACCESS:
           return "to access your profile.";
         case CustomDialogText.ACTIONVISUALISE:
-          return "to visualise your actions.";
+          return "to show the the data visualisation from your actions.";
         case CustomDialogText.ACTIONTABLE:
           return "to view your actions using tabular form.";
         default:

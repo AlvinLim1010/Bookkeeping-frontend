@@ -169,12 +169,15 @@ export default {
       await this.getTableData()
     },
     async getTableData(){
-      var username = this.$store.state.user.username;
+      var requestBody = {
+        "username": this.$store.state.user.username
+      }
 
-      let result = await httpRequest.axiosGetRequest(
+      let result = await httpRequest.axiosRequest(
+        "post",
         getBackEndServer(), 
         Actions.GETACTIONS, 
-        { username },
+        requestBody,
       )
 
       if (result.data.length > 0){

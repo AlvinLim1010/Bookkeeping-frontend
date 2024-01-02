@@ -25,4 +25,19 @@ function authorizeRole(targetRole) {
     return createStore.state.user.role === targetRole;
 }
 
-export { getBackEndServer, authorizeRole, setStateUser, setTokens, test };
+function changeDateFormat(date){
+    const originalDate = new Date(date);
+    const formattedDate = originalDate
+    .toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    })
+    .split("/")
+    .reverse()
+    .join("-");
+    
+    return formattedDate
+}
+
+export { getBackEndServer, authorizeRole, setStateUser, setTokens, changeDateFormat };

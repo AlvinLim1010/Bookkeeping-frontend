@@ -90,7 +90,7 @@
 <script>
 let httpRequest = require("../../../helper/httpRequests");
 import { Actions } from "../../../helper/enums"
-import { getBackEndServer } from "../../../helper/commons";
+import { getBackEndServer, changeDateFormat } from "../../../helper/commons";
 
 export default {
   data() {
@@ -184,15 +184,9 @@ export default {
     },
     openDialog(item) {
       this.dialog = true;
-      const originalDate = new Date(item.date);
-      const formattedDate = originalDate.toLocaleDateString('en-GB', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }).split('/').reverse().join('-');
 
       this.id = item.id
-      this.initialInput.date = this.updateInput.date = formattedDate
+      this.initialInput.date = this.updateInput.date = changeDateFormat(item.date)
       this.main_category = item.main_category
       this.sub_category = item.sub_category
       this.initialInput.amount = this.updateInput.amount = item.amount

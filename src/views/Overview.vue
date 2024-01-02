@@ -218,12 +218,15 @@ export default {
   },
   methods: {
     async getOverviewData(){
-      var username = this.$store.state.user.username;
+      var requestBody = {
+        "username": this.$store.state.user.username !== null ? this.$store.state.user.username : ""
+      }
 
-      let result = await httpRequest.axiosGetRequest(
+      let result = await httpRequest.axiosRequest(
+        "post",
         getBackEndServer(), 
         Actions.ACTIONSOVERVIEW, 
-        { username },
+        requestBody,
       )
 
       this.modelData = result.data
