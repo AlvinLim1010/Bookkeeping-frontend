@@ -28,7 +28,13 @@
         <v-divider></v-divider>
       </v-card-title>
       <v-card-text>
-        Visualise
+        <AmountLineCard 
+          :items="items"
+          ref="amountLineCard" 
+        />
+        <PercentageDoughnutCard 
+          ref="percentageDoughnutCard" 
+        />
       </v-card-text>
     </v-card>
 
@@ -69,6 +75,9 @@ import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
 import UserResetPassword from '../views/users/ResetPassword.vue'
 
+import AmountLineCard from '../views/visualiseCards/AmountLineCard.vue'
+import PercentageDoughnutCard from '../views/visualiseCards/PercentageDoughnutCard.vue'
+
 let httpRequest = require("../helper/httpRequests");
 import { Actions } from "../helper/enums"
 import { getBackEndServer } from "../helper/commons";
@@ -81,10 +90,13 @@ export default {
     UserLogin,
     UserForgetPassword,
     UserResetPassword,
+    AmountLineCard,
+    PercentageDoughnutCard
   },
   async mounted() {
     if (this.$store.state.user.username){
       await this.getTableData()
+      this.openVisualiseCard()
     }
   },
   data() {
@@ -111,6 +123,7 @@ export default {
   methods: {
     async refreshData(){
       await this.getTableData()
+      this.openVisualiseCard()
     },
     async getTableData(){
       var requestBody = {
@@ -165,6 +178,9 @@ export default {
         const formattedDate = changeDateFormat(item.date)
         return formattedDate >= this.selectedStartDate && formattedDate <= this.selectedEndDate;
       });
+    },
+    openVisualiseCard(){
+      this.$refs.amountLineCard.openCard()
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()

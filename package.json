@@ -11,6 +11,7 @@
     "axios": "^1.6.2",
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
+    "echarts": "^5.4.3",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-awesome-notifications": "^3.1.1",
