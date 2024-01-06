@@ -92,8 +92,21 @@ export default {
       selectedStartDate: null,
       selectedEndDate: null,
       items: [],
+      updatedItems: [],
       customText: CustomDialogText.ACTIONVISUALISE
     };
+  },
+  watch:{
+    selectedStartDate: function(newValue, oldValue) {
+      if (oldValue !== null){
+        this.updateItems()
+      }
+    },
+    selectedEndDate: function(newValue, oldValue) {
+      if (oldValue !== null){
+        this.updateItems()
+      }
+    }
   },
   methods: {
     async refreshData(){
@@ -141,10 +154,17 @@ export default {
         });
 
         this.items.reverse()
+        this.updatedItems = this.items
 
         this.selectedStartDate = changeDateFormat(this.items[this.items.length - 1]['date'])
         this.selectedEndDate = changeDateFormat(this.items[0]['date'])
       }
+    },
+    updateItems(){
+      this.updatedItems = this.items.filter(item => {
+        const formattedDate = changeDateFormat(item.date)
+        return formattedDate >= this.selectedStartDate && formattedDate <= this.selectedEndDate;
+      });
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()

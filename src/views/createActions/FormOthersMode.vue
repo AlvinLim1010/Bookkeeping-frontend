@@ -12,15 +12,8 @@
     </v-row>
 
     <v-row justify="space-between" class="mt-0">
-        <v-select
-          class="ml-3 mr-3"
-          style="width: 0%;"
-          v-model="selectedCurrency"
-          :items="currencies"
-          label="Select Currency"
-        ></v-select>
         <v-text-field
-          class="ml-0 mr-3"
+          class="ml-3 mr-3"
           v-model="amount"
           label="Amount"
           required
@@ -78,15 +71,12 @@ export default {
       loading: false,
       amount: null,
       remarks: null,
-      selectedCurrency: "MYR",
-      currencies: ['MYR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD'],
     };
   },
   methods:{
     reset(){
       this.$refs.form.reset()
       this.$emit("reset-date")
-      this.selectedCurrency = this.currencies[0]
     },
     async submit() {
       if (this.amount !== null && this.subAction && this.selectedDate) {

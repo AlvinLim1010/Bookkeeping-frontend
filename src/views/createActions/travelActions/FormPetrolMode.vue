@@ -3,37 +3,16 @@
     <v-row justify="space-between">
       <v-text-field
         class="ml-3 mr-3"
-        style="width: 44%;"
         v-model="odometer"
         label="Odometer"
         type="number"
         filled
       ></v-text-field>
-      <v-select
-        style="width: 15%;"
-        v-model="selectedCurrency"
-        :items="currencies"
-        label="Select Currency"
-      ></v-select>
-      <v-text-field
-        class="ml-1 mr-3"
-        style="width: 29%;"
-        v-model="fuelPrice"
-        label="Fuel Price per Litre"
-        filled
-      ></v-text-field>
     </v-row>
 
     <v-row justify="space-between" class="mt-0">
-      <v-select
-        class="ml-3 mr-3"
-        style="width: 0%;"
-        v-model="selectedCurrency"
-        :items="currencies"
-        label="Select Currency"
-      ></v-select>
       <v-text-field
-        class="ml-0 mr-3"
+        class="ml-3 mr-3"
         v-model="amount"
         label="Amount"
         required
@@ -90,10 +69,7 @@ export default {
     return {
       loading: false,
       odometer: null,
-      fuelPrice: "2.05",
       amount: null,
-      selectedCurrency: "MYR",
-      currencies: ['MYR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD'],
       remarks: null
     };
   },
@@ -130,8 +106,6 @@ export default {
     reset() {
       this.$refs.form.reset()
       this.$emit("reset-date")
-      this.fuelPrice = "2.05"
-      this.selectedCurrency = this.currencies[0]
     }
   }
 }

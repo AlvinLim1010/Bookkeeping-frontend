@@ -4,7 +4,7 @@
       <v-data-table 
         theme="dark" 
         :headers="headers"
-        :items="items"
+        :items="updatedItems"
         :fixed-header="true"
         v-if="this.$store.state.user.username"
       >
@@ -12,6 +12,18 @@
           <v-toolbar flat>
             <v-toolbar-title>My Data Table</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-text-field 
+              class="mt-5 ml-1 mr-1"
+              v-model="selectedStartDate"
+              type="date" 
+              label="Start Date"
+            />
+            <v-text-field 
+              class="mt-5 ml-1 mr-1"
+              v-model="selectedEndDate"
+              type="date" 
+              label="End Date"
+            />
             <v-btn
                 class="ma-1"
                 @click="refreshData()"
@@ -101,6 +113,7 @@
 
 <script>
 import { CustomDialogText } from "../helper/enums"
+import { changeDateFormat } from "../helper/commons"
 import DialogAccessProfile from './shared/DialogAccessProfile.vue'
 import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
@@ -158,12 +171,28 @@ export default {
         { title: 'Actions', key: 'actions', sortable: false }
       ],
       items: [],
-      customText: CustomDialogText.ACTIONTABLE
+      updatedItems: [],
+      customText: CustomDialogText.ACTIONTABLE,
+      selectedStartDate: null,
+      selectedEndDate: null,
     };
+  },
+  watch:{
+    selectedStartDate: function(newValue, oldValue) {
+      if (oldValue !== null){
+        this.updateItems()
+      }
+    },
+    selectedEndDate: function(newValue, oldValue) {
+      if (oldValue !== null){
+        this.updateItems()
+      }
+    }
   },
   methods: {
     removeData(action_id){
       this.items = this.items.filter(item => item.id !== action_id)
+      this.updatedItems = this.items
     },
     async refreshData(){
       await this.getTableData()
@@ -210,7 +239,17 @@ export default {
         });
 
         this.items.reverse()
+        this.updatedItems = this.items
+
+        this.selectedStartDate = changeDateFormat(this.items[this.items.length - 1]['date'])
+        this.selectedEndDate = changeDateFormat(this.items[0]['date'])
       }
+    },
+    updateItems(){
+      this.updatedItems = this.items.filter(item => {
+        const formattedDate = changeDateFormat(item.date)
+        return formattedDate >= this.selectedStartDate && formattedDate <= this.selectedEndDate;
+      });
     },
     deleteItem(item){
       if (item.sub_category === TravelSubActions.FLIGHT){

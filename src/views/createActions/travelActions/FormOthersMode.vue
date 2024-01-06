@@ -1,15 +1,8 @@
 <template>
     <v-form ref="form" fast-fail @submit.prevent>  
       <v-row justify="space-between" class="mt-0">
-        <v-select
-          class="ml-3 mr-3"
-          style="width: 0%;"
-          v-model="selectedCurrency"
-          :items="currencies"
-          label="Select Currency"
-        ></v-select>
         <v-text-field
-          class="ml-0 mr-3"
+          class="ml-3 mr-3"
           v-model="amount"
           label="Amount"
           required
@@ -70,8 +63,6 @@
       return {
         loading: false,
         amount: null,
-        selectedCurrency: "MYR",
-        currencies: ['MYR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD'],
         remarks: null
       };
     },
@@ -105,8 +96,6 @@
       reset() {
         this.$refs.form.reset()
         this.$emit("reset-date")
-        this.fuelPrice = "2.05"
-        this.selectedCurrency = this.currencies[0]
       }
     }
   }
