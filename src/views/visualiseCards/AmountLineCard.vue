@@ -1,6 +1,6 @@
 <template>
   <v-card v-show="card">
-    <div ref="chart" style="width: 600px; height: 400px"></div>
+    <div ref="chart" :style="cardStyle"></div>
   </v-card>
 </template>
 
@@ -21,15 +21,24 @@ export default {
       visualiseItem: Object(),
       date: Array(),
       amount: Array(),
-      options: null
+      cardStyle: null,
     }
   },
+  mounted(){
+    this.style()
+  },  
   beforeDestroy() {
     if (this.myChart) {
       this.myChart.dispose();
     }
   },
   methods: {
+    style(){
+      this.cardStyle = {
+        width: `${(window.innerWidth / 2) - 53}px`,
+        height: "400px"
+      }
+    },
     async updateItems(){
       let seenDates = new Set();
       this.visualiseItem = this.items.filter(element => {
@@ -60,13 +69,19 @@ export default {
 
       this.myChart = echarts.init(this.$refs.chart);
 
-      this.option = {
+      const option = {
         xAxis: {
           type: "category",
           data: this.date,
+          name: "Date",
+          nameLocation: "middle",
+          nameGap: 35,
         },
         yAxis: {
           type: "value",
+          name: "Amount (MYR)",
+          nameLocation: "middle",
+          nameGap: 55,
         },
         series: [
           {
@@ -76,11 +91,8 @@ export default {
         ],
       };
 
-      this.myChart.setOption(this.option);
+      this.myChart.setOption(option);
     }
   }
 };
 </script>
-
-<style>
-</style>

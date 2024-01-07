@@ -28,13 +28,20 @@
         <v-divider></v-divider>
       </v-card-title>
       <v-card-text>
-        <AmountLineCard 
-          :items="items"
-          ref="amountLineCard" 
-        />
-        <PercentageDoughnutCard 
-          ref="percentageDoughnutCard" 
-        />
+        <v-row>
+          <v-col cols="auto">
+            <AmountLineCard 
+              :items="items"
+              ref="amountLineCard" 
+            />
+          </v-col>
+          <v-col cols="auto">
+            <PercentageDoughnutCard 
+              :items="items"
+              ref="percentageDoughnutCard" 
+            />
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
 
@@ -68,7 +75,6 @@
 
 <script>
 import { CustomDialogText } from "../helper/enums"
-import { changeDateFormat } from "../helper/commons"
 import DialogAccessProfile from './shared/DialogAccessProfile.vue'
 import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
@@ -80,7 +86,7 @@ import PercentageDoughnutCard from '../views/visualiseCards/PercentageDoughnutCa
 
 let httpRequest = require("../helper/httpRequests");
 import { Actions } from "../helper/enums"
-import { getBackEndServer } from "../helper/commons";
+import { getBackEndServer, changeDateFormat } from "../helper/commons";
 
 export default {
   name: "Visualise",
@@ -97,7 +103,11 @@ export default {
     if (this.$store.state.user.username){
       await this.getTableData()
       this.openVisualiseCard()
+      window.addEventListener("resize", this.updateStyle)
     }
+  },
+  beforeDestroy(){
+    window.removeEventListener("resize", this.updateStyle)
   },
   data() {
     return {
@@ -179,8 +189,13 @@ export default {
         return formattedDate >= this.selectedStartDate && formattedDate <= this.selectedEndDate;
       });
     },
+    updateStyle(){
+      this.$refs.amountLineCard.style()
+      this.$refs.percentageDoughnutCard.style()
+    },
     openVisualiseCard(){
       this.$refs.amountLineCard.openCard()
+      this.$refs.percentageDoughnutCard.openCard()
     },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()
