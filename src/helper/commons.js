@@ -1,7 +1,7 @@
 import createStore from '../store'
 
 function getBackEndServer(){
-    return process.env.VUE_APP_AUTH_SERVER
+    return process.env.VUE_APP_BACKEND
 }
 
 async function setStateUser(data) {
