@@ -1,20 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Records from '../views/Records.vue'
-import Register from '../views/Register.vue'
-import Update from '../views/Update.vue'
-import Delete from '../views/Delete.vue'
 import Error404 from '../views/404.vue'
 
+import Profile from '../views/Profile.vue'
+import Overview from '../views/Overview.vue'
+import Create from '../views/Create.vue'
+import Table from '../views/Table.vue'
+import Visualise from '../views/Visualise'
+
 const routes = [
-  {path: '/', name: 'home', component: Home, meta: {title: 'Home'}},
-  {path: '/records', name: 'records', component: Records, meta: {title: 'Records'}},
-  {path: '/register', name: 'register', component: Register, meta: {title: 'Register'}},
-  {path: '/update', name: 'update', component: Update, meta: {title: 'Update'}},
-  {path: '/delete', name: 'delete', component: Delete, meta: {title: 'Delete'}},
+  // NavBar
+  {path: '/overview', component: Overview, meta: {title: 'Overview'}},
+  {path: '/table', component: Table, meta: {title: 'Table'}},
+  {path: '/create', component: Create, meta: {title: 'Create'}},
+  {path: '/visualise', component: Visualise, meta: {title: 'Visualise'}},
+  {path: '/profile', component: Profile, meta: {title: 'Profile'}},
 
   // 404 page
-  {path: '/:catchAll(.*)', name: 'Error404', component: Error404, meta: {title: 'Error'}}
+  {path: '/:catchAll(.*)', component: Error404, meta: {title: 'Error'}}
 ]
 
 const router = createRouter({
