@@ -158,21 +158,19 @@
   </v-app>
 
   <UserRegister 
-      @open-login="openLoginDialog"
-      ref="userRegister" 
-    />
-    <UserLogin 
-      @open-register="openRegisterDialog"
-      @open-forgetpassword="openForgetPasswordDialog"
-      ref="userLogin"
-    />
-    <UserForgetPassword 
-      @open-login="openLoginDialog"
-      ref="userForgetPassword"
-    />
-    <UserResetPassword 
-      ref="userResetPassword"
-    />
+    @open-login="openLoginDialog"
+    ref="userRegister" 
+  />
+  <UserLogin 
+    @logged-in="getOverviewData"
+    @open-register="openRegisterDialog"
+    @open-forgetpassword="openForgetPasswordDialog"
+    ref="userLogin"
+  />
+  <UserForgetPassword 
+    @open-login="openLoginDialog"
+    ref="userForgetPassword"
+  />
     
 </template>
 
@@ -182,7 +180,6 @@ import DialogAccessProfile from './shared/DialogAccessProfile.vue'
 import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
-import UserResetPassword from '../views/users/ResetPassword.vue'
 
 let httpRequest = require("../helper/httpRequests");
 import { Actions } from "../helper/enums"
@@ -195,7 +192,6 @@ export default {
     UserRegister,
     UserLogin,
     UserForgetPassword,
-    UserResetPassword,
   },
   async created() {
     await this.getOverviewData()
@@ -256,9 +252,6 @@ export default {
     openForgetPasswordDialog(){
       this.$refs.userForgetPassword.openDialog()
     },
-    openResetPasswordDialog(){
-      this.$refs.userResetPassword.openDialog()
-    }
   }
 };
 </script>

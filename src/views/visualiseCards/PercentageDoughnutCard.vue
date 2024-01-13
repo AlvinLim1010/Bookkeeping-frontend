@@ -60,11 +60,10 @@ export default {
     async openCard(){
       this.card = true
       await this.updateItems()
-      this.buildGraph()
-    },
-    buildGraph(){
       this.myChart = echarts.init(this.$refs.chart);
-
+      this.buildChart(); 
+    },
+    buildChart(){
       const option = {
         legend: {
           orient: 'vertical', 
@@ -86,9 +85,9 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '20',
+                fontSize: '15',
                 fontWeight: 'bold',
-                formatter: '{b}: {c} ({d}%)', 
+                formatter: '{b}: {c}', 
               },
             },
             labelLine: {
@@ -103,6 +102,10 @@ export default {
       };
 
       this.myChart.setOption(option);
+    },
+    async updateChart() {
+      await this.updateItems()
+      this.buildChart(); 
     }
   }
 };

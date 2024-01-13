@@ -31,13 +31,13 @@
         <v-row>
           <v-col cols="auto">
             <AmountLineCard 
-              :items="items"
+              :items="updatedItems"
               ref="amountLineCard" 
             />
           </v-col>
           <v-col cols="auto">
             <PercentageDoughnutCard 
-              :items="items"
+              :items="updatedItems"
               ref="percentageDoughnutCard" 
             />
           </v-col>
@@ -60,6 +60,7 @@
     ref="userRegister" 
   />
   <UserLogin 
+    @logged-in="refreshData"
     @open-register="openRegisterDialog"
     @open-forgetpassword="openForgetPasswordDialog"
     ref="userLogin"
@@ -67,9 +68,6 @@
   <UserForgetPassword 
     @open-login="openLoginDialog"
     ref="userForgetPassword"
-  />
-  <UserResetPassword 
-    ref="userResetPassword"
   />
 </template>
 
@@ -79,7 +77,6 @@ import DialogAccessProfile from './shared/DialogAccessProfile.vue'
 import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
-import UserResetPassword from '../views/users/ResetPassword.vue'
 
 import AmountLineCard from '../views/visualiseCards/AmountLineCard.vue'
 import PercentageDoughnutCard from '../views/visualiseCards/PercentageDoughnutCard.vue'
@@ -95,7 +92,6 @@ export default {
     UserRegister,
     UserLogin,
     UserForgetPassword,
-    UserResetPassword,
     AmountLineCard,
     PercentageDoughnutCard
   },
@@ -103,6 +99,7 @@ export default {
     if (this.$store.state.user.username){
       await this.getTableData()
       this.openVisualiseCard()
+      this.cardOpen = true
       window.addEventListener("resize", this.updateStyle)
     }
   },
@@ -111,6 +108,7 @@ export default {
   },
   data() {
     return {
+      cardOpen: false,
       selectedStartDate: null,
       selectedEndDate: null,
       items: [],
@@ -119,21 +117,28 @@ export default {
     };
   },
   watch:{
-    selectedStartDate: function(newValue, oldValue) {
+    selectedStartDate: async function(newValue, oldValue) {
       if (oldValue !== null){
-        this.updateItems()
+        await this.updateItems()
+        await this.updateVisualiseCard()
       }
     },
-    selectedEndDate: function(newValue, oldValue) {
+    selectedEndDate: async function(newValue, oldValue) {
       if (oldValue !== null){
-        this.updateItems()
+        await this.updateItems()
+        await this.updateVisualiseCard()
       }
     }
   },
   methods: {
     async refreshData(){
       await this.getTableData()
-      this.openVisualiseCard()
+      if (!this.cardOpen){
+        this.openVisualiseCard()
+        this.cardOpen = true
+      } else {
+        await this.updateVisualiseCard()
+      }
     },
     async getTableData(){
       var requestBody = {
@@ -183,7 +188,7 @@ export default {
         this.selectedEndDate = changeDateFormat(this.items[0]['date'])
       }
     },
-    updateItems(){
+    async updateItems(){
       this.updatedItems = this.items.filter(item => {
         const formattedDate = changeDateFormat(item.date)
         return formattedDate >= this.selectedStartDate && formattedDate <= this.selectedEndDate;
@@ -197,6 +202,10 @@ export default {
       this.$refs.amountLineCard.openCard()
       this.$refs.percentageDoughnutCard.openCard()
     },
+    async updateVisualiseCard(){
+      this.$refs.amountLineCard.updateChart()
+      this.$refs.percentageDoughnutCard.updateChart()
+    },
     openLoginDialog(){
       this.$refs.userLogin.openDialog()
     },
@@ -206,9 +215,6 @@ export default {
     openForgetPasswordDialog(){
       this.$refs.userForgetPassword.openDialog()
     },
-    openResetPasswordDialog(){
-      this.$refs.userResetPassword.openDialog()
-    }
   }
 
 }

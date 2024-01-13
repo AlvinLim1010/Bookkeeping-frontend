@@ -33,7 +33,8 @@ export const TravelSubActions = {
 
 export const MiscSubActions = {
     DOGANDPARENTS: "Dog Foods + Treat Parents",
-    HEALTHCARE: "Healthcare"
+    HEALTHCARE: "Healthcare",
+    HAIRCUT: "Haircut"
 };
 
 export const IncomeSubActions = {
@@ -56,7 +57,11 @@ export const EntertainmentSubActions = {
 
 
 export const RouteAuthServer = {
-    LOGIN: "/user/login"
+    LOGIN: "/user/login",
+    REGISTER: "/user/register",
+    FORGOTPASSWORD: "/user/forget",
+    RESETPASSWORD: "/user/reset",
+    UPDATEINFO: "/user/update",
 };
 
 export const Actions = {

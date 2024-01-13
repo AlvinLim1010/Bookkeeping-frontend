@@ -99,9 +99,6 @@
       @open-login="openLoginDialog"
       ref="userForgetPassword"
     />
-    <UserResetPassword 
-      ref="userResetPassword"
-    />
 
 </template>
 
@@ -119,7 +116,6 @@ import DialogAccessProfile from './shared/DialogAccessProfile.vue'
 import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
-import UserResetPassword from '../views/users/ResetPassword.vue'
 
 export default {
   name: "Create",
@@ -137,7 +133,6 @@ export default {
     UserRegister,
     UserLogin,
     UserForgetPassword,
-    UserResetPassword,
   },
   data() {
     return {
@@ -178,9 +173,6 @@ export default {
     openForgetPasswordDialog(){
       this.$refs.userForgetPassword.openDialog()
     },
-    openResetPasswordDialog(){
-      this.$refs.userResetPassword.openDialog()
-    }
   }
 };
 </script>

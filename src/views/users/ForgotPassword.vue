@@ -48,7 +48,7 @@
                   color="primary"
                 ></v-progress-linear>
 
-                <v-btn type="submit" color="primary" block @click="submitForm">
+                <v-btn type="submit" color="primary" block @click="forgotPassword">
                   Forget Password
                 </v-btn>
                 <v-btn type="clear" block class="mt-3" @click="reset">
@@ -75,6 +75,10 @@
 </template>
 
 <script>
+let httpRequest = require("../../helper/httpRequests");
+import { getBackEndServer } from "../../helper/commons";
+import { RouteAuthServer } from "../../helper/enums";
+
 export default {
   data() {
     return {
@@ -88,10 +92,37 @@ export default {
   },
   methods: {
     reset(){
-      console.log("reset")
+      this.email = ''
+      this.loading = false
     },
-    submitForm(){
-      console.log("submit")
+    async forgotPassword(){
+      if (this.isEmailValid(this.email)){
+        var requestBody = { 
+          "email": this.email, 
+        }
+
+        this.loading = true
+        
+        let response = await httpRequest.axiosRequest(
+          "post",
+          getBackEndServer(), 
+          RouteAuthServer.FORGOTPASSWORD, 
+          requestBody,
+        )
+        
+        if (response.status === 200){
+          httpRequest.awn.info("Your password has been changed to 'abc123'")
+          this.$emit("open-login")
+          this.closeDialog()
+        } else {
+          this.loading = false
+        }
+        
+        this.reset()
+      }
+    },
+    isEmailValid(email) {
+      return this.rules.emailRules[0](email) === true;
     },
     openDialog(){
       this.dialog = true

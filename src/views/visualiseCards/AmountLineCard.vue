@@ -60,15 +60,17 @@ export default {
         return element.total
       })
     },
-    async openCard(){
-      this.card = true
-      await this.updateItems()
-      this.visualiseItem.reverse()
-      await this.getDate()
-      await this.getAmount()
+    async openCard() {
+      this.card = true;
+      await this.updateItems();
+      this.visualiseItem.reverse();
+      await this.getDate();
+      await this.getAmount();
 
       this.myChart = echarts.init(this.$refs.chart);
-
+      this.buildChart(); 
+    },
+    buildChart() {
       const option = {
         xAxis: {
           type: "category",
@@ -92,6 +94,14 @@ export default {
       };
 
       this.myChart.setOption(option);
+    },
+    async updateChart() {
+      await this.updateItems();
+      this.visualiseItem.reverse();
+      await this.getDate();
+      await this.getAmount();
+
+      this.buildChart(); 
     }
   }
 };

@@ -9,7 +9,7 @@
                 class="text-h6 text-md-h5 text-lg-h4 font-weight-bold text-center"
                 style="line-height: 2"
               >
-                Reset Password
+                Change Password
               </v-card-title>
             </v-row>
             <v-divider></v-divider>
@@ -55,7 +55,7 @@
                   color="primary"
                 ></v-progress-linear>
 
-                <v-btn type="submit" color="primary" block @click="submitForm">
+                <v-btn type="submit" color="primary" block @click="updatePassword">
                   Reset Password
                 </v-btn>
                 <v-btn type="clear" block class="mt-3" @click="reset">
@@ -82,6 +82,10 @@
 </template>
 
 <script>
+let httpRequest = require("../../helper/httpRequests");
+import { getBackEndServer } from "../../helper/commons";
+import { RouteAuthServer } from "../../helper/enums";
+
 export default {
   data() {
     return {
@@ -101,15 +105,47 @@ export default {
   },
   methods: {
     reset(){
-      console.log("reset")
+      this.password = '',
+      this.confirm_password = '',
+      this.confirm_password2 = '',
+      this.showPassword1 = false,
+      this.showPassword2 = false,
+      this.showPassword3 = false,
+      this.loading = false
     },
-    submitForm(){
-      console.log("submit")
+    async updatePassword(){
+      if (
+        this.password.length >= 6 && 
+        this.confirm_password.length >= 6 && 
+        this.confirm_password === this.confirm_password2
+      ){
+        var requestBody = { 
+          "email": this.$store.state.user.email, 
+          "old_password": this.password, 
+          "new_password": this.confirm_password
+        }
+
+        this.loading = true
+        
+        let response = await httpRequest.axiosRequest(
+          "patch",
+          getBackEndServer(), 
+          RouteAuthServer.RESETPASSWORD, 
+          requestBody,
+        )
+        
+        if (response.status === 200){
+          this.closeDialog()
+        } else {
+          this.loading = false
+        }
+      }
     },
     openDialog(){
       this.dialog = true
     },
     closeDialog(){
+      this.reset()
       this.dialog = false
     },
   }

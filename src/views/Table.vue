@@ -98,6 +98,7 @@
     ref="userRegister" 
   />
   <UserLogin 
+    @logged-in="refreshData"
     @open-register="openRegisterDialog"
     @open-forgetpassword="openForgetPasswordDialog"
     ref="userLogin"
@@ -105,9 +106,6 @@
   <UserForgetPassword 
     @open-login="openLoginDialog"
     ref="userForgetPassword"
-  />
-  <UserResetPassword 
-    ref="userResetPassword"
   />
 </template>
 
@@ -118,7 +116,6 @@ import DialogAccessProfile from './shared/DialogAccessProfile.vue'
 import UserRegister from '../views/users/Register.vue'
 import UserLogin from '../views/users/Login.vue'
 import UserForgetPassword from '../views/users/ForgotPassword.vue'
-import UserResetPassword from '../views/users/ResetPassword.vue'
 
 import UpdateNormalActionsDialogs from '../views/dialogs/updateDialogs/NormalActionsDialogs.vue'
 import UpdatePetrolActionsDialogs from '../views/dialogs/updateDialogs/PetrolActionsDialogs.vue'
@@ -139,7 +136,6 @@ export default {
     UserRegister,
     UserLogin,
     UserForgetPassword,
-    UserResetPassword,
     UpdateNormalActionsDialogs,
     UpdatePetrolActionsDialogs,
     UpdateFlightActionsDialogs,
@@ -278,9 +274,6 @@ export default {
     openForgetPasswordDialog(){
       this.$refs.userForgetPassword.openDialog()
     },
-    openResetPasswordDialog(){
-      this.$refs.userResetPassword.openDialog()
-    }
   }
 
 }

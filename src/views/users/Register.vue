@@ -14,19 +14,20 @@
             </v-row>
             <v-divider></v-divider>
             <v-card-text class="text-center">
-              <v-form ref="form" fast-fail @submit.prevent>
+              <v-form ref="forms" fast-fail @submit.prevent>
                 <v-text-field 
-                    v-model="username" 
-                    label="Username"
-                    required>
-                </v-text-field>
+                  v-model="username" 
+                  label="Username"
+                  required
+                  @input="onInput"
+                />
 
                 <v-text-field
                   v-model="email"
                   label="Email Address"
                   :rules="rules.emailRules"
                   required
-                ></v-text-field>
+                />
 
                 <v-text-field
                   :type="showPassword1 ? 'text' : 'password'"
@@ -36,7 +37,7 @@
                   :rules="rules.minimum"
                   v-model="password"
                   label="Password"
-                ></v-text-field>
+                />
 
                 <v-text-field
                   :type="showPassword2 ? 'text' : 'password'"
@@ -46,7 +47,7 @@
                   :rules="rules.passwordMatch"
                   v-model="confirm_password"
                   label="Confirm Password"
-                ></v-text-field>
+                />
 
                 <v-divider class="my-1"></v-divider>
 
@@ -69,7 +70,7 @@
                   color="primary"
                 ></v-progress-linear>
 
-                <v-btn type="submit" color="primary" block @click="submitForm">
+                <v-btn type="submit" color="primary" block @click="register">
                   Register
                 </v-btn>
                 <v-btn type="clear" block class="mt-3" @click="reset">
@@ -96,6 +97,10 @@
 </template>
 
 <script>
+let httpRequest = require("../../helper/httpRequests");
+import { getBackEndServer } from "../../helper/commons";
+import { RouteAuthServer } from "../../helper/enums";
+
 export default {
   data() {
     return {
@@ -116,10 +121,54 @@ export default {
   },
   methods: {
     reset(){
-      console.log("reset")
+      this.username = ''
+      this.email = ''
+      this.password = ''
+      this.confirm_password = ''
+      this.showPassword1 = false
+      this.showPassword2 = false
+      this.loading = false
     },
-    submitForm(){
-      console.log("submit")
+    isEmailValid(email) {
+      return this.rules.emailRules[0](email) === true;
+    },
+    onInput() {
+      this.username = this.username.toUpperCase();
+    },
+    async register(){
+      if (
+        this.username && 
+        this.email && 
+        this.password && 
+        this.confirm_password && 
+        this.password === this.confirm_password &&
+        this.password.length >= 6 && 
+        this.isEmailValid(this.email)
+      ){
+        var requestBody = { 
+          "username": this.username, 
+          "email": this.email, 
+          "password": this.password
+        }
+
+        this.loading = true
+        
+        let response = await httpRequest.axiosRequest(
+          "post",
+          getBackEndServer(), 
+          RouteAuthServer.REGISTER, 
+          requestBody,
+        )
+        
+        if (response.status === 200){
+          this.$emit("open-login")
+          this.closeDialog()
+        } else {
+          this.loading = false
+        }
+        
+        this.reset()
+      }
     },
     openDialog(){
       this.dialog = true
