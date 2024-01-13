@@ -4,7 +4,7 @@ This Vue.js frontend project is designed to interact with the Bookkeeping Financ
 
 # Prerequisites
 - Node.js version 18.18
-- [Backend Repository] (https://github.com/AlvinLim1010/Bookkeeping-API)
+- [Backend Repository](https://github.com/AlvinLim1010/Bookkeeping-API)
 
 # Installation
 1. Clone the repository:
