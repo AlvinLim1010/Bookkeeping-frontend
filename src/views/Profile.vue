@@ -91,7 +91,7 @@ export default {
         email: this.$store.state.user.email,
         username: this.$store.state.user.username,
         password: this.$store.state.user.password,
-        join_date: this.$store.state.user.joinDate,
+        joined_date: this.$store.state.user.joinDate,
       },
       customText: CustomDialogText.PROFILEACCESS,
       updateIcon: ["email", "username", "password"]
