@@ -34,7 +34,8 @@ export const TravelSubActions = {
 export const MiscSubActions = {
     DOGANDPARENTS: "Dog Foods + Treat Parents",
     HEALTHCARE: "Healthcare",
-    HAIRCUT: "Haircut"
+    HAIRCUT: "Haircut",
+    PHONE: "Phone",
 };
 
 export const IncomeSubActions = {
